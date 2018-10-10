@@ -164,7 +164,7 @@ class App extends Component {
 
                {/*https://developers.google.com/maps/documentation/javascript/tutorial*/}
                <div id="map"></div>
-               <SideBar
+               <SideBar {...this.state}
                   venues={this.state.names.filter(name => name.toLowerCase().includes(this.state.searchString.toLowerCase()))}
                   updateSearchString={this.updateSearchString}
                >

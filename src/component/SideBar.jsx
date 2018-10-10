@@ -10,7 +10,7 @@ class SideBar extends Component {
                placeholder={"Filter Venues"}
                     onChange={(event) => this.props.updateSearchString(event.target.value)}
             />
-            <VenueList venues={this.props.venues}
+            <VenueList venues={this.props.venues} {...this.props}
                        handleListItemClick={this.props.handleListItemClick}/>
          </div>
       )
