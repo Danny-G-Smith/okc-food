@@ -3,8 +3,7 @@ import React from 'react'
 
 const VenueItem = (props) => {
    return (
-      <li className="venueItem"
-         onClick={() => this.props.handleListItemClick(this.props)}>
+      <li className="venueItem">
          {props.name}
       </li> )
 }

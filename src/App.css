@@ -1,8 +1,8 @@
 .App {
-   box-sizing: border-box;
+   text-align: center;
    display: flex;
    flex-flow: row nowrap;
-   text-align: center;
+   box-sizing: border-box;
 }
 
 .App-logo {
@@ -12,9 +12,9 @@
 
 .App-header {
    background-color: #222;
-   color: white;
    height: 150px;
    padding: 20px;
+   color: white;
 }
 
 .App-title {
@@ -43,12 +43,11 @@ footer, .page-footer {
 
 .venueItem {
    background: #eee;
-   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-   cursor: pointer;
-   font-size: 18px;
    list-style: none;
-   margin: 6px 0 0;
    padding: 5px;
+   margin: 6px 0 0;
+   font-size: 18px;
+   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 li {
@@ -57,13 +56,38 @@ li {
 }
 
 #map {
+   width: calc( 100vw - 320px) !important;
    height: calc(100vh - 151px);
-   width: calc(100vw - 320px) !important;
 }
 
 .sideBar {
    height: calc(100vh - 298px);
    overflow-y: scroll;
+}
+
+.nav-wrapper .col {
+   justify-content: space-around;
+   display: flex;
+}
+
+nav .brand-logo {
+   justify-content: flex-start  !important;
+   position: inherit;
+   display: flex !important;
+}
+
+.page-footer {
+   justify-content: space-around;
+   display: flex;
+}
+
+
+
+.page-footer .container,
+.page-footer .footer-copyright {
+   justify-content: flex-start  !important;
+   position: inherit;
+   display: flex !important;
 }
 
 @keyframes App-logo-spin {
@@ -76,11 +100,11 @@ li {
 }
 
 input#search {
-   box-sizing: border-box;
-   font-size: 18px;
-   line-height: 1.4;
-   padding: 5px 10px 0;
    width: 100%;
+   padding: 5px 10px 0;
+   line-height: 1.4;
+   font-size: 18px;
+   box-sizing: border-box;
 }
 
 ol.venueList {
