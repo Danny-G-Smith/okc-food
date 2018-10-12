@@ -156,11 +156,20 @@ class App extends Component {
          var marker = new window.google.maps.Marker({
             position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
             map: map,
+            animation: window.google.maps.Animation.DROP,
             title: myVenue.venue.name,
             icon: {
                url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
             }
          })
+
+         function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+               marker.setAnimation(null);
+            } else {
+               marker.setAnimation(window.google.maps.Animation.BOUNCE);
+            }
+         }
 
          // Click on A Marker!
          marker.addListener('click', function() {
@@ -198,7 +207,7 @@ class App extends Component {
                   {/*<input className="search"/>*/}
                   <VenueList/>
                </SideBar>
-               {console.log(this.venues)}
+               {/*{console.log(this.venues)}*/}
             </div>
             <Footer copyrights="&copy 2018 Copyright Text"
                     moreLinks={

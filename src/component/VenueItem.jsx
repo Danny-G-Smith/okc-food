@@ -34,10 +34,10 @@ class VenueItem extends Component {
          }
 
          // Add marker click event listener
-         marker.addListener('click', toggleBounce); // _ => {
-         //    this.props.handleClick(item.venue.id);  // Pass event to parent handler
-         //    this.checkInfoWindows();                // Set the appropriate infoWindow
-         // })
+         marker.addListener('click',  _ => {
+            this.props.handleClick(item.venue.id);  // Pass event to parent handler
+            this.checkInfoWindows();                // Set the appropriate infoWindow
+         })
       })
    };
 

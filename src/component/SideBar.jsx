@@ -11,7 +11,8 @@ class SideBar extends Component {
                     onChange={(event) => this.props.updateSearchString(event.target.value)}
             />
             <VenueList venues={this.props.venues} {...this.props}
-                       handleListItemClick={this.props.handleListItemClick}/>
+                       // handleListItemClick={this.props.handleListItemClick}/>
+            />
          </div>
       )
    }
