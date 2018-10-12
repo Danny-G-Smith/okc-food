@@ -71,7 +71,7 @@ class App extends Component {
    }
 
    renderMap = () => {
-      loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyC5T8bcDZqx_vYa-ApCWu1hcymdMEmK9ek&callback=initMap')
+      loadScript(`${process.env.REACT_APP_google_map}`)
       window.initMap = this.initMap
    }
 
@@ -92,8 +92,8 @@ class App extends Component {
       // have to place REACT_APP_ in front of the variable.
       //
       const parameters = {
-         client_id:     `${process.env.REACT_APP_client_id}`, // '5V3OK3JM0RT0YWWBQR2ZQNB3UJB3V0LM24GQHKEZKBI2EOWQ', //
-         client_secret: `${process.env.REACT_APP_client_secret}`, // 'HYHANVJXDDZKVSHXHVL4XSXXIELLWJVLSM1EHSZB2KTI4XKK', //
+         client_id:     `${process.env.REACT_APP_client_id}`,
+         client_secret: `${process.env.REACT_APP_client_secret}`,
          query:         'food', //`${process.env.REACT_APP_food}`,          // 'food', //
          intent:        'browse', //`${process.env.REACT_APP_browse}`,       // browse, //
          ll:            '35.522489,-97.619255',                  //35.522489, -97.619255
