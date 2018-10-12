@@ -37,6 +37,10 @@ footer, .page-footer {
    background-color: #2FA69A;
 }
 
+.page-footer .footer-copyright {
+   min-height: 35px;
+}
+
 .venueList {
    padding: 5px;
 }
@@ -51,17 +55,22 @@ footer, .page-footer {
 }
 
 li {
-   display: list-item;
+   /*display: list-item;*/
    text-align: -webkit-match-parent;
+}
+
+
+.venueList {
+   height: calc(100vh - 320px);
 }
 
 #map {
    width: calc( 100vw - 320px) !important;
-   height: calc(100vh - 151px);
+   height: calc(100vh - 140px);
 }
 
 .sideBar {
-   height: calc(100vh - 298px);
+   /*height: calc(100vh - 298px);*/
    overflow-y: scroll;
 }
 
@@ -76,19 +85,17 @@ nav .brand-logo {
    display: flex !important;
 }
 
-.page-footer {
-   justify-content: space-around;
-   display: flex;
-}
+/*.page-footer {*/
+   /*justify-content: space-around;*/
+   /*display: flex;*/
+/*}*/
 
-
-
-.page-footer .container,
-.page-footer .footer-copyright {
-   justify-content: flex-start  !important;
-   position: inherit;
-   display: flex !important;
-}
+/*.page-footer .container,*/
+/*.page-footer .footer-copyright {*/
+   /*justify-content: flex-start  !important;*/
+   /*position: inherit;*/
+   /*display: flex !important;*/
+/*}*/
 
 @keyframes App-logo-spin {
    from {

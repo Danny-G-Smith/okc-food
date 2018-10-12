@@ -21,6 +21,7 @@ class App extends Component {
     */
 
    state = {
+      list: [],
       names: [],
       photos: [],
       photoURL: [],
@@ -37,6 +38,32 @@ class App extends Component {
          this.setState({searchString: ''});
       }
    }
+
+   // handleClick = (id) => {
+   //    this.setState(state => {
+   //       const list = state.list.map(venue => {
+   //          if (venue.venue.id === id) {
+   //             venue.popup = true;
+   //          }
+   //          else {
+   //             venue.popup = false;
+   //          }
+   //          return venue;
+   //       })
+   //
+   //       return ({list})
+   //    })
+   // };
+
+   handleInput = (query) => {
+      this.setState(({ venues }) => {
+         const list = venues.filter(({ venue }) => {
+            return venue.name.toLowerCase().includes(query.toLowerCase());
+         })
+
+         return ({ list });
+      })
+   };
 
    // 717-8629
    componentDidMount () {
@@ -88,7 +115,7 @@ class App extends Component {
       )
          .then(response => {
             this.setState({
-               //address: response.data.response.groups[0].items.map(element => element.venue.location.formattedAddress),
+               address: response.data.response.groups[0].items.map(element => element.venue.location.formattedAddress),
                names:   response.data.response.groups[0].items.map(element => element.venue.name),
                //photos:  response.data.response.photos.items[0].items.map(element => element.venue.categories[0].shortName),
                short:   response.data.response.groups[0].items.map(element => element.venue.categories[0].shortName),
@@ -119,8 +146,12 @@ class App extends Component {
       // Display Dynamic Markers
       this.state.venues.map(myVenue => {
 
-         var contentString = `${myVenue.venue.name}`
-
+         var contentString =
+            `${myVenue.venue.name + '<br>' +
+            myVenue.venue.location.formattedAddress[0] + '<br>' +
+            myVenue.venue.location.formattedAddress[1] + '<br>' +
+            myVenue.venue.location.formattedAddress[2] + '<br>'
+               }`
          // Create A Marker
          var marker = new window.google.maps.Marker({
             position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
@@ -140,11 +171,7 @@ class App extends Component {
             // Open An InfoWindow
             infowindow.open(map, marker)
          })
-
       })
-
-
-
    }
 
    render() {
@@ -172,12 +199,12 @@ class App extends Component {
                   <VenueList/>
                </SideBar>
                {console.log(this.venues)}
-               <map></map>
             </div>
-            <footer>
-               <span className="copyrights=">&copy; 2018 Copyright Text </span>
-               <span className="more-links"><a className="grey-text text-lighten-4" href="#!">More Links</a></span>
-            </footer>
+            <Footer copyrights="&copy 2018 Copyright Text"
+                    moreLinks={
+                       <a className="grey-text text-lighten-4 right" href="#!">More Links</a>
+                    }>
+            </Footer>
          </main>
       )
    }
@@ -197,12 +224,13 @@ export default App;
 // Runtime type checking for React props and similar objects.
 // https://www.npmjs.com/package/prop-types
 App.propTypes = {
-   venues: PropTypes.object,
-   names: PropTypes.object,
-   photos: PropTypes.object,
-   venueID: PropTypes.object,
-   short: PropTypes.object,
-   prefix: PropTypes.object,
-   suffix: PropTypes.object,
+   list:   PropTypes.object,
    markers: PropTypes.array,
+   names: PropTypes.object,
+   //photos: PropTypes.object,
+   //prefix: PropTypes.object,
+   short: PropTypes.object,
+   //suffix: PropTypes.object,
+   venueID: PropTypes.object,
+   venues: PropTypes.object,
 }

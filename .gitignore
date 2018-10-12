@@ -7,7 +7,7 @@
 /coverage
 
 # production
-/build
+
 
 # misc
 .DS_Store
@@ -21,4 +21,17 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+build/asset-manifest.json
+build/favicon.ico
+build/index.html
+build/manifest.json
+build/precache-manifest.5638b62da3d5043bf5c83e665e190e7a.js
+build/service-worker.js
+build/static/css/main.1fa09ac7.chunk.css
+build/static/js/1.aaa4ea69.chunk.js
+build/static/js/main.c459cadf.chunk.js
+build/static/js/runtime~main.229c360f.js
+server.js
+build/
 package-lock.json
