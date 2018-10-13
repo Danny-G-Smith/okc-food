@@ -116,32 +116,33 @@ class App extends Component {
       // Display Dynamic Markers
       this.state.venues.map(myVenue => {
 
-         var contentString =
-            `${myVenue.venue.name + '<br>' +
-            myVenue.venue.location.formattedAddress[0] + '<br>' +
-            myVenue.venue.location.formattedAddress[1] + '<br>' +
-            myVenue.venue.location.formattedAddress[2] + '<br>'
-               }`
+         const contentString =
+            `<p>${myVenue.venue.name}<br>
+            ${myVenue.venue.location.formattedAddress[0]}<br>
+            ${myVenue.venue.location.formattedAddress[1]}<br>
+            ${myVenue.venue.location.formattedAddress[2]}</p>
+            `
 
          // Create A Marker
          var marker = new window.google.maps.Marker({
             position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
             map: map,
-            //animation: window.google.maps.Animation.DROP,
+            //draggable: true,
+            animation: window.google.maps.Animation.DROP,
             //title: myVenue.venue.name,
             icon: {
                url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
             }
          })
 
-         window.google.maps.event.addListener(infowindow,'closeclick',function(){
+         window.google.maps.event.addListener(infowindow,'closeclick',function(e){
             marker.setAnimation(null);
-            infowindow.setContent(contentString)
             //marker.setAnimation(window.google.maps.Animation.BOUNCE);
          });
 
-         marker.addListener('click', function () {
-            //marker.setAnimation(null);
+         // getVenues = () => {
+         marker.addListener('click', function() {
+            infowindow.setContent(contentString)
             marker.setAnimation(window.google.maps.Animation.BOUNCE);
          });
 
@@ -149,18 +150,7 @@ class App extends Component {
             infowindow.open(map, marker);
             infowindow.setContent(contentString)
          });
-
-         infowindow.open(map, marker);
-
-         // // Click on A Marker!
-         // marker.addListener('click', function() {
-         //
-         //    // Change the content
-         //    infowindow.setContent(contentString)
-         //
-         //    // Open An InfoWindow
-         //    infowindow.open(map, marker)
-         // })
+         return(true)
       })
    }
 
