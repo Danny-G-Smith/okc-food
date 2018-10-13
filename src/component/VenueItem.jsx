@@ -25,14 +25,6 @@ class VenueItem extends Component {
          this.markers.push(marker);  // Add marker to list
          this.setInfoWindow();       // Create and infoWindow for all of the markers
 
-         function toggleBounce() {
-            if (marker.getAnimation() !== null) {
-               marker.setAnimation(null);
-            } else {
-               marker.setAnimation(window.google.maps.Animation.BOUNCE);
-            }
-         }
-
          // Add marker click event listener
          marker.addListener('click',  _ => {
             this.props.handleClick(item.venue.id);  // Pass event to parent handler

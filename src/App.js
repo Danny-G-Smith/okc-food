@@ -39,32 +39,6 @@ class App extends Component {
       }
    }
 
-   // handleClick = (id) => {
-   //    this.setState(state => {
-   //       const list = state.list.map(venue => {
-   //          if (venue.venue.id === id) {
-   //             venue.popup = true;
-   //          }
-   //          else {
-   //             venue.popup = false;
-   //          }
-   //          return venue;
-   //       })
-   //
-   //       return ({list})
-   //    })
-   // };
-
-   handleInput = (query) => {
-      this.setState(({ venues }) => {
-         const list = venues.filter(({ venue }) => {
-            return venue.name.toLowerCase().includes(query.toLowerCase());
-         })
-
-         return ({ list });
-      })
-   };
-
    // 717-8629
    componentDidMount () {
       this.getVenues()
@@ -94,17 +68,12 @@ class App extends Component {
       const parameters = {
          client_id:     `${process.env.REACT_APP_client_id}`,
          client_secret: `${process.env.REACT_APP_client_secret}`,
-         query:         'food', //`${process.env.REACT_APP_food}`,          // 'food', //
-         intent:        'browse', //`${process.env.REACT_APP_browse}`,       // browse, //
-         ll:            '35.522489,-97.619255',                  //35.522489, -97.619255
-         radius:        10000, //`${process.env.REACT_APP_radius}`,       //10000, //
-         v:             `${process.env.REACT_APP_v}`             //'20180908'
+         query:         'food', //`${process.env.REACT_APP_food}`,
+         intent:        'browse', //`${process.env.REACT_APP_browse}`,
+         ll:            '35.522489,-97.619255',
+         radius:        10000, //`${process.env.REACT_APP_radius}`,
+         v:             `${process.env.REACT_APP_v}`
       }
-
-      // {console.log(photos)}
-      // https://api.foursquare.com/v2/venues/search?client_id=5V3OK3JM0RT0YWWBQR2ZQNB3UJB3V0LM24GQHKEZKBI2EOWQ&client_secret=HYHANVJXDDZKVSHXHVL4XSXXIELLWJVLSM1EHSZB2KTI4XKK&query=food&intent=browse&ll=35.522489,-97.619255&radius=10000&v=20180926
-      // Pass props to parent component in React.js
-
 
       axios.get(
          explore + new URLSearchParams(parameters),
@@ -134,9 +103,10 @@ class App extends Component {
 
    initMap = () => {
 
-      // Create A Map - Centered in OKC OK
-      var map = new window.google.maps.Map(document.getElementById('map'), {
+       var map = new window.google.maps.Map(document.getElementById('map'), {
          center: {lat: 35.52248, lng: -97.619255},
+         disableDefaultUI: true,
+         scrollwheel: false,
          zoom: 13
       })
 
@@ -152,34 +122,45 @@ class App extends Component {
             myVenue.venue.location.formattedAddress[1] + '<br>' +
             myVenue.venue.location.formattedAddress[2] + '<br>'
                }`
+
          // Create A Marker
          var marker = new window.google.maps.Marker({
             position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
             map: map,
-            animation: window.google.maps.Animation.DROP,
-            title: myVenue.venue.name,
+            //animation: window.google.maps.Animation.DROP,
+            //title: myVenue.venue.name,
             icon: {
                url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
             }
          })
 
-         function toggleBounce() {
-            if (marker.getAnimation() !== null) {
-               marker.setAnimation(null);
-            } else {
-               marker.setAnimation(window.google.maps.Animation.BOUNCE);
-            }
-         }
-
-         // Click on A Marker!
-         marker.addListener('click', function() {
-
-            // Change the content
+         window.google.maps.event.addListener(infowindow,'closeclick',function(){
+            marker.setAnimation(null);
             infowindow.setContent(contentString)
+            //marker.setAnimation(window.google.maps.Animation.BOUNCE);
+         });
 
-            // Open An InfoWindow
-            infowindow.open(map, marker)
-         })
+         marker.addListener('click', function () {
+            //marker.setAnimation(null);
+            marker.setAnimation(window.google.maps.Animation.BOUNCE);
+         });
+
+         marker.addListener('click', function() {
+            infowindow.open(map, marker);
+            infowindow.setContent(contentString)
+         });
+
+         infowindow.open(map, marker);
+
+         // // Click on A Marker!
+         // marker.addListener('click', function() {
+         //
+         //    // Change the content
+         //    infowindow.setContent(contentString)
+         //
+         //    // Open An InfoWindow
+         //    infowindow.open(map, marker)
+         // })
       })
    }
 
