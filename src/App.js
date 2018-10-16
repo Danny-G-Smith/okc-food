@@ -123,6 +123,8 @@ class App extends Component {
             ${myVenue.venue.location.formattedAddress[2]}</p>
             `
 
+         var myMapContainer = []
+
          // Create A Marker
          var marker = new window.google.maps.Marker({
             position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
@@ -134,6 +136,10 @@ class App extends Component {
                url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
             }
          })
+
+         myMapContainer.push(marker)
+         console.log(myMapContainer)
+
 
          window.google.maps.event.addListener(infowindow,'closeclick',function(e){
             marker.setAnimation(null);
