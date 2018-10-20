@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import VenueList from './VenueList'
 
 class SideBar extends Component {
-   render () {
+   render (props) {
       return (
          <div className="sideBar">
             <input  type={"search"}
@@ -10,9 +10,12 @@ class SideBar extends Component {
                placeholder={"Filter Venues"}
                     onChange={(event) => this.props.updateSearchString(event.target.value)}
             />
-            <VenueList venues={this.props.venues} {...this.props}
-                       // handleListItemClick={this.props.handleListItemClick}/>
-            />
+            <VenueList venues={this.props.venues}{...this.props}
+            >
+               <li key={this.props.idx}>
+               {this.props.venues[this.props.idx]}
+               </li>
+            </VenueList>
          </div>
       )
    }

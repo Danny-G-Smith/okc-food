@@ -1,8 +1,8 @@
 .App {
-   text-align: center;
+   box-sizing: border-box;
    display: flex;
    flex-flow: row nowrap;
-   box-sizing: border-box;
+   text-align: center;
 }
 
 .App-logo {
@@ -12,9 +12,9 @@
 
 .App-header {
    background-color: #222;
+   color: white;
    height: 150px;
    padding: 20px;
-   color: white;
 }
 
 .App-title {
@@ -47,11 +47,11 @@ footer, .page-footer {
 
 .venueItem {
    background: #eee;
-   list-style: none;
-   padding: 5px;
-   margin: 6px 0 0;
-   font-size: 18px;
    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+   font-size: 18px;
+   list-style: none;
+   margin: 6px 0 0;
+   padding: 5px;
 }
 
 li {
@@ -59,14 +59,18 @@ li {
    text-align: -webkit-match-parent;
 }
 
-
 .venueList {
    height: calc(100vh - 320px);
 }
 
+.MyApi {
+   display: flex;
+   flex-flow: row nowrap;
+}
+
 #map {
-   width: calc( 100vw - 320px) !important;
    height: calc(100vh - 140px);
+   width: calc(100vw - 320px) !important;
 }
 
 .sideBar {
@@ -75,26 +79,26 @@ li {
 }
 
 .nav-wrapper .col {
-   justify-content: space-around;
    display: flex;
+   justify-content: space-around;
 }
 
 nav .brand-logo {
-   justify-content: flex-start  !important;
-   position: inherit;
    display: flex !important;
+   justify-content: flex-start !important;
+   position: inherit;
 }
 
 /*.page-footer {*/
-   /*justify-content: space-around;*/
-   /*display: flex;*/
+/*justify-content: space-around;*/
+/*display: flex;*/
 /*}*/
 
 /*.page-footer .container,*/
 /*.page-footer .footer-copyright {*/
-   /*justify-content: flex-start  !important;*/
-   /*position: inherit;*/
-   /*display: flex !important;*/
+/*justify-content: flex-start  !important;*/
+/*position: inherit;*/
+/*display: flex !important;*/
 /*}*/
 
 @keyframes App-logo-spin {
@@ -107,11 +111,11 @@ nav .brand-logo {
 }
 
 input#search {
-   width: 100%;
-   padding: 5px 10px 0;
-   line-height: 1.4;
-   font-size: 18px;
    box-sizing: border-box;
+   font-size: 18px;
+   line-height: 1.4;
+   padding: 5px 10px 0;
+   width: 100%;
 }
 
 ol.venueList {
@@ -121,4 +125,10 @@ ol.venueList {
 
 input[type=search]:not(.browser-default) {
    margin: 0 !important;
+}
+
+.venueItem:hover,
+.venueItem:active {
+   background-color: #b2dfdb;
+   cursor: pointer;
 }

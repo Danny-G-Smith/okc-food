@@ -8,11 +8,11 @@ import PropTypes from 'prop-types'; // ES6
 
 // https://www.npmjs.com/package/axios
 import axios from 'axios'
-import SideBar from './component/SideBar'
-import VenueList from './component/VenueList'
+import SideBar from './components/SideBar'
+import VenueList from './components/VenueList'
+import MyApi from './components/MyApi'
 
 require('dotenv').config()
-console.log(`${process.env.REACT_APP_DEV_API_URL}`)
 
 class App extends Component {
 
@@ -20,26 +20,51 @@ class App extends Component {
     https://www.youtube.com/watch?v=W5LhLZqj76s&feature=youtu.be
     */
 
+
+   handleClick = (id) => {
+      this.setState(state => {
+         const list = state.list.map(venue => {
+            if (venue.venue.id === id) {
+               venue.popup = true;
+            }
+            else {
+               venue.popup = false;
+            }
+            return venue;
+         })
+
+         return ({list})
+      })
+   };
+
+   handleInput = (query) => {
+      this.setState(({ venues }) => {
+         const list = venues.filter(({ venue }) => {
+            return venue.name.toLowerCase().includes(query.toLowerCase());
+         })
+
+         return ({ list });
+      })
+   };
+
    state = {
       list: [],
       names: [],
-      photos: [],
-      photoURL: [],
       searchString: '',
       short: [],
       venueID: [],
       venues: [],
    }
 
-   updateSearchString = (searchString) => {
-      if (searchString) {
-         this.setState({searchString});
-      } else {
-         this.setState({searchString: ''});
-      }
-   }
-
-   // 717-8629
+   // updateSearchString = (searchString) => {
+   //    if (searchString) {
+   //       this.setState({searchString});
+   //    } else {
+   //       this.setState({searchString: ''});
+   //    }
+   // }
+   //
+   // // 717-8629
    componentDidMount () {
       this.getVenues()
    }
@@ -50,15 +75,8 @@ class App extends Component {
    }
 
    getVenues = () => {
-      const explore = 'https://api.foursquare.com/v2/venues/explore?'
-      const photos  = 'https://api.foursquare.com/v2/photos/PHOTO_ID'
-      const search  = 'https://api.foursquare.com/v2/venues/search?'
-      const short   = 'https://api.foursquare.com/v2/venues/'
-      const venues  = 'https://api.foursquare.com/v2/venues/'
-
-
       // https://www.npmjs.com/package/dotenv
-      // https://medium.com/@danieljameskay/create-react-app-dotenv-281693a19ecd
+      // jkkjjjllljlj
       // # with npm
       // npm install dotenv --S
       // require('dotenv').config()
@@ -71,13 +89,19 @@ class App extends Component {
          query:         'food', //`${process.env.REACT_APP_food}`,
          intent:        'browse', //`${process.env.REACT_APP_browse}`,
          ll:            '35.522489,-97.619255',
+         google_map:    `${process.env.REACT_APP_google_map}`,
          radius:        10000, //`${process.env.REACT_APP_radius}`,
          v:             `${process.env.REACT_APP_v}`
       }
+      const explore = 'https://api.foursquare.com/v2/venues/explore?'
+      const list    = 'https://api.foursquare.com/v2/venues/'
+      const search  = 'https://api.foursquare.com/v2/venues/search?'
+      const short   = 'https://api.foursquare.com/v2/venues/'
+      const venues  = 'https://api.foursquare.com/v2/venues/'
 
       axios.get(
          explore + new URLSearchParams(parameters),
-         photos  + new URLSearchParams(parameters),
+         list    + new URLSearchParams(parameters),
          search  + new URLSearchParams(parameters),
          short   + new URLSearchParams(parameters),
          venues  + new URLSearchParams(parameters),
@@ -85,25 +109,24 @@ class App extends Component {
          .then(response => {
             this.setState({
                address: response.data.response.groups[0].items.map(element => element.venue.location.formattedAddress),
+               list:    response.data.response.groups[0].items,
                names:   response.data.response.groups[0].items.map(element => element.venue.name),
-               //photos:  response.data.response.photos.items[0].items.map(element => element.venue.categories[0].shortName),
                short:   response.data.response.groups[0].items.map(element => element.venue.categories[0].shortName),
                venueID: response.data.response.groups[0].items.map(element => element.venue.id),
                venues:  response.data.response.groups[0].items
-               //photoURLs: [this.state.photoURLs, photoURL]
-               //}))
-               // prefix:  response.data.response.photos.items[0].map(element => element.prefix),
-               // suffix:  response.data.response.photos.items[0].map(element => element.suffix),}, this.renderMap())
             }, this.renderMap())
+
          })
          .catch(error => {
             console.log('ERROR!! ' + error)
          })
    }
 
+
    initMap = () => {
 
-       var map = new window.google.maps.Map(document.getElementById('map'), {
+
+      var map = new window.google.maps.Map(document.getElementById('map'), {
          center: {lat: 35.52248, lng: -97.619255},
          disableDefaultUI: true,
          scrollwheel: false,
@@ -138,8 +161,6 @@ class App extends Component {
          })
 
          myMapContainer.push(marker)
-         console.log(myMapContainer)
-
 
          window.google.maps.event.addListener(infowindow,'closeclick',function(e){
             marker.setAnimation(null);
@@ -178,8 +199,8 @@ class App extends Component {
                {/*https://developers.google.com/maps/documentation/javascript/tutorial*/}
                <div id="map"></div>
                <SideBar {...this.state}
-                  venues={this.state.names.filter(name => name.toLowerCase().includes(this.state.searchString.toLowerCase()))}
-                  updateSearchString={this.updateSearchString}
+                        venues={this.state.names.filter(name => name.toLowerCase().includes(this.state.searchString.toLowerCase()))}
+                        updateSearchString={this.updateSearchString}
                >
                   {/*<input className="search"/>*/}
                   <VenueList/>
@@ -213,10 +234,7 @@ App.propTypes = {
    list:   PropTypes.object,
    markers: PropTypes.array,
    names: PropTypes.object,
-   //photos: PropTypes.object,
-   //prefix: PropTypes.object,
    short: PropTypes.object,
-   //suffix: PropTypes.object,
    venueID: PropTypes.object,
    venues: PropTypes.object,
 }
