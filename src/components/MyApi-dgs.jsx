@@ -6,13 +6,12 @@ import VenueList from './VenueList'
 require('dotenv').config()
 
 export default class MyApi extends Component {
-   constructor(state) {
-      super(state)
+   constructor (props) {
+      super(props)
 
       // Instance properties
       this.map = null        // Component wide access to map
       this.markers = []  // Component wide access to markers
-      this.list = [] //
       this.infoWindows = []  // Component wide access to infoWindows
       this.google_map = `${process.env.REACT_APP_google_map}`
       this.center = `${process.env.REACT_APP_center}`
@@ -21,6 +20,7 @@ export default class MyApi extends Component {
    }
 
    state = {
+      list: [],
       markers: [],
       names: [],
       searchString: '',
@@ -93,6 +93,9 @@ export default class MyApi extends Component {
          .catch(error => {
             console.log('ERROR!! ' + error)
          })
+
+      console.log(list)
+      //debugger
    }
 
    handleClick = (id) => {
@@ -121,34 +124,23 @@ export default class MyApi extends Component {
       })
    };
 
-   // Initialize Google map
    initMap = () => {
-      //const { lat, lng } = this.state.center;
+
+      // Initialize Google map
+      // <<<<<<<<<<<===================
+      const { lat, lng } = this.center;
       this.map = new window.google.maps.Map(document.getElementById('map'), {
          center: {lat: 35.52248, lng: -97.619255},
+         //disableDefaultUI: true,
+         //scrollwheel: false,
          zoom: 13
       })
 
       this.setMarkers();  // Set markers
-   };
-
-   // Set an infoWindow for each marker
-   setInfoWindow = () => {
-      //Iterate through markers
-      this.markers.forEach(marker => {
-         // New infoWindow
-         let infoWindow = new window.google.maps.InfoWindow();
-
-         // Set content
-         infoWindow.setContent(
-            `<p>${marker.name}</p>`);
-
-         // Add to list of infoWindows
-         this.infoWindows.push(infoWindow)
-      })
-   };
+   }
 
    // Render the info windows based on list item popup property
+   // <<<<<<<<<<<===================
    checkInfoWindows = () => {
       const { list } = this.state;
 
@@ -161,27 +153,27 @@ export default class MyApi extends Component {
                infoWindow.content              // Check the content string
                   .includes(item.venue.name));  // See if it includes the item name
 
-         // If the item popup is true
-         if (item.popup) {
-            // Open infoWindow
-            match.open(this.markers[i].map, this.markers[i]);
-         }
-         else {
-            match.close();  //Otherwise, close it.
-         }
+         // // If the item popup is true
+         // if (item.popup) {
+         //    // Open infoWindow
+         //    match.open(this.markers[i].map, this.markers[i]);
+         // }
+         // else {
+         //    match.close();  //Otherwise, close it.
+         // }
       })
    }
 
    // Set the markers based on the list items
+   // <<<<<<<<<<<===================
    setMarkers = () => {
-      const { list } = this.state;
+      const {list} = this.state;
 
       // Iterate through the list items
-      list.forEach(item => {
+      list.forEach((item, k) => {
 
          // Create new marker with info of current list item
          let marker = new window.google.maps.Marker({
-
             position: {
                lat: item.venue.location.lat,
                lng: item.venue.location.lng
@@ -189,23 +181,47 @@ export default class MyApi extends Component {
             map: this.map,
             animation: window.google.maps.Animation.DROP,
             name: item.venue.name,
-            popup: item.popup
+            icon: {
+               url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
+            }
          })
 
          this.markers.push(marker);  // Add marker to list
-         this.setInfoWindow();   // Create and infoWindow for all of the markers
+         this.setInfoWindow();       // Create and infoWindow for all of the markers
 
          // Add marker click event listener
          marker.addListener('click', _ => {
-            this.handleClick(item.venue.id);  // Pass event to parent handler
-            this.checkInfoWindows();          // Set the appropriate infoWindow
+            //this.markers[i].map, this.markers[i]
+            this.infowindow[k].open(this.map, this.marker[k]);
+            // this.state.handleClick(item.venue.id);  // Pass event to parent handler
+            // this.checkInfoWindows();                // Set the appropriate infoWindow
          })
+      })
+   }
+
+   // Set an infoWindow for each marker
+   // <<<<<<<<<<<===================
+   setInfoWindow = () => {
+
+      //Iterate through markers
+      this.markers.forEach(marker => {
+
+         // New infoWindow
+         let infoWindow = new window.google.maps.InfoWindow();
+
+         // Set content
+         // infoWindow.setContent(`<p>${marker.name}</p>`);
+
+         // Add to list of infoWindows
+         this.infoWindows.push(infoWindow);
       })
    };
 
+
    // Check the which markers should be rendered
+   // <<<<<<<<<<<===================
    checkMarkers = () => {
-      const { list } = this.state;
+      const {list} = this.state;
 
       // Create an array of all the current list items names
       const listNames = list.map(item => item.venue.name);
@@ -230,25 +246,13 @@ export default class MyApi extends Component {
       })
    }
 
-   // Handle data changes from map
-   // componentDidUpdate = (state) => {
-   //
-   //    // List changes from filtering
-   //    if (this.state.list.length !== state.list.length) {
-   //       this.checkMarkers();  // Change the markers accordingly
-   //    }
-   //    // Possible changes to popup values
-   //    else if (this.state.list !== state.list) {
-   //       this.checkInfoWindows();  // Change the popups accordingly
-   //    }
-   // }
 
    render () {
       return (
          <div className="MyApi">
 
             {/*https://developers.google.com/maps/documentation/javascript/tutorial*/}
-            <div id="map"> </div>
+            <div id="map"></div>
             <SideBar {...this.state}
                      venues={this.state.names.filter(name => name.toLowerCase().includes(this.state.searchString.toLowerCase()))}
                      updateSearchString={this.updateSearchString}
@@ -262,12 +266,12 @@ export default class MyApi extends Component {
    }
 }
 
-
-const __loadScript = (url) => {
-   var index = window.document.getElementsByTagName("script")[0]
-   var script = window.document.createElement("script")
-   script.src = url
-   script.async = true
-   script.defer = true
-   index.parentNode.insertBefore(script, index)
-}
+   const
+   __loadScript = (url) => {
+      var index = window.document.getElementsByTagName('script')[0]
+      var script = window.document.createElement('script')
+      script.src = url
+      script.async = true
+      script.defer = true
+      index.parentNode.insertBefore(script, index)
+   }
