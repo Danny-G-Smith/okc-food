@@ -41,15 +41,16 @@ class VenueList extends Component {
    //console.log( match );
 
    render () {
-      const { venues, venue, venueID, idx } = this.props
+      const { venues, venue, venueID, idx, venueItem } = this.props
 
       return (
       <ol className="venueList" id="venueList">
          { venues && venues.map((venues, idx) => (
-            <li key={idx} className={'venueItem'} id={venueID} onClick={e => this.props.addButtonTrigger(idx)}>
+
+            <li key={idx} className={'venueItem'} id={venueID} >
                {venues}
             </li>
-         ))}
+            ))}
          </ol>
       )
    }

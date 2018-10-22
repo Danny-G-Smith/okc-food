@@ -195,8 +195,8 @@ export default class MyApi extends Component {
             popup: item.popup
          })
 
-         markers.push(marker);  // Add marker to list
-         //this.setState({markers});
+         this.markers.push(marker);  // Add marker to list
+         this.setState({markers});
 
          this.setInfoWindow();   // Create and infoWindow for all of the markers
 
