@@ -10,7 +10,6 @@ class VenueList extends Component {
       this.id = 0
       this.list = []
       this.venueID = ''
-      this.markers = []
       // this.infowindow = props.infowindow
    }
 
@@ -30,6 +29,10 @@ class VenueList extends Component {
       })
    };
 
+   // Create an array of all the current list items names
+   //const markers = markers.map(item => item.venue.name);
+
+
    // Find the matching infoWindow for the current item
    // match = this.infoWindows
    //    .find(infoWindow =>               // Search the infoWindow list
@@ -38,37 +41,15 @@ class VenueList extends Component {
    //console.log( match );
 
    render () {
-      // props.markers[props.idx].addEventListener("click", function(e) {
-      //    window.google.maps.event.trigger(props.markers[props.idx], 'click');
-      // })
-
-      // // Get the element, add a click listener...
-      // document.getElementById("parent-list").addEventListener("click", function(e) {
-      //    // e.target is the clicked element!
-      //    // If it was a list item
-         {/*if(e.target && e.target.nodeName == "LI") {*/}
-            {/*// List item found!  Output the ID!*/}
-      //       console.log("List item ", e.target.id.replace("post-", ""), " was clicked!");
-      //    }
-      // });
-      //
-      // venue.addListener('click', _ => {
-      //    this.props.handleClick(item.venue.id);  // Pass event to parent handler
-      //    this.checkInfoWindows();                // Set the appropriate infoWindow
-      // })
-
+      const { venues, venue, venueID, idx } = this.props
 
       return (
-         <ol className="venueList" id="venueList">
-            {this.props.venues &&
-            this.props.venues.map((venue, idx) => (
-               <li key={idx} className={'venueItem'}
-                  onClick={window.google.maps.event.trigger(this.props.markers[this.props.venueID], 'click')}
-                     //window.google.maps.event.trigger(this.props.markers[this.props.venueID], 'click')}
-                >
-                  {venue}
-               </li>
-            ))}
+      <ol className="venueList" id="venueList">
+         { venues && venues.map((venues, idx) => (
+            <li key={idx} className={'venueItem'} id={venueID} onClick={e => this.props.addButtonTrigger(idx)}>
+               {venues}
+            </li>
+         ))}
          </ol>
       )
    }

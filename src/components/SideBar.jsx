@@ -14,6 +14,7 @@ class SideBar extends Component {
    }
 
    render () {
+      const { venues, idx } = this.props;
       return (
          <div className="sideBar">
             <input  type={"search"}
@@ -21,10 +22,10 @@ class SideBar extends Component {
                placeholder={"Filter Venues"}
                     onChange={(event) => this.props.updateSearchString(event.target.value)}
             />
-            <VenueList venues={this.props.venues}
+            <VenueList venues={venues}
             >
-               <li key={this.props.idx}>
-                  {...this.props}
+               <li key={idx} {...this.props}>
+                  {venues}
                </li>
             </VenueList>
          </div>

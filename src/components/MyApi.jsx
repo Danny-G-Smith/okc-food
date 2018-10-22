@@ -8,6 +8,7 @@ require('dotenv').config()
 export default class MyApi extends Component {
    constructor(state) {
       super(state)
+      this.addButtonTrigger = this.addButtonTrigger.bind(this);
 
       // Instance properties
       this.map = null        // Component wide access to map
@@ -21,6 +22,7 @@ export default class MyApi extends Component {
    }
 
    state = {
+      idx: '',
       markers: [],
       names: [],
       searchString: '',
@@ -130,6 +132,7 @@ export default class MyApi extends Component {
       })
 
       this.setMarkers();  // Set markers
+      //this.setButtons();  // Set buttons
    };
 
    // Set an infoWindow for each marker
@@ -161,20 +164,20 @@ export default class MyApi extends Component {
                infoWindow.content              // Check the content string
                   .includes(item.venue.name));  // See if it includes the item name
 
-         // If the item popup is true
-         if (item.popup) {
-            // Open infoWindow
-            match.open(this.markers[i].map, this.markers[i]);
-         }
-         else {
-            match.close();  //Otherwise, close it.
-         }
+         // // If the item popup is true
+         // if (item.popup) {
+         //    // Open infoWindow
+         //    match.open(this.markers[i].map, this.markers[i]);
+         // }
+         // else {
+         //    match.close();  //Otherwise, close it.
+         // }
       })
    }
 
    // Set the markers based on the list items
    setMarkers = () => {
-      const { list } = this.state;
+      const { list, markers } = this.state;
 
       // Iterate through the list items
       list.forEach(item => {
@@ -192,7 +195,9 @@ export default class MyApi extends Component {
             popup: item.popup
          })
 
-         this.markers.push(marker);  // Add marker to list
+         markers.push(marker);  // Add marker to list
+         //this.setState({markers});
+
          this.setInfoWindow();   // Create and infoWindow for all of the markers
 
          // Add marker click event listener
@@ -201,6 +206,12 @@ export default class MyApi extends Component {
             this.checkInfoWindows();          // Set the appropriate infoWindow
          })
       })
+      // if (markers) {
+      //    this.setState({markers});
+      // } else {
+      //    this.setState({markers: ''});
+      // }
+
    };
 
    // Check the which markers should be rendered
@@ -228,6 +239,20 @@ export default class MyApi extends Component {
             marker.setVisible(true);      // Otherwise, make the marker visible
          }
       })
+   }
+
+   setButtons = () => {
+      const { venues, idx, markers } = this.props;
+      console.log('markers: ' + this.state.markers)
+      venues &&
+      venues.map((venue, idx) => (
+         this.addButtonTrigger()
+      ))
+   }
+
+   addButtonTrigger = (idx) => {
+      window.google.maps.event.trigger(this.state.markers[idx], "click")
+      this.state.markers[idx].setAnimation(window.google.maps.Animation.BOUNCE);
    }
 
    // Handle data changes from map
