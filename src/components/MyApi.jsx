@@ -5,10 +5,11 @@ import VenueList from './VenueList'
 
 require('dotenv').config()
 
-export default class MyApi extends Component {
+class MyApi extends Component {
    constructor(state) {
       super(state)
       this.addButtonTrigger = this.addButtonTrigger.bind(this);
+
 
       // Instance properties
       this.map = null        // Component wide access to map
@@ -165,13 +166,13 @@ export default class MyApi extends Component {
                   .includes(item.venue.name));  // See if it includes the item name
 
          // // If the item popup is true
-         // if (item.popup) {
-         //    // Open infoWindow
-         //    match.open(this.markers[i].map, this.markers[i]);
-         // }
-         // else {
-         //    match.close();  //Otherwise, close it.
-         // }
+         if (item.popup) {
+            // Open infoWindow
+            match.open(this.markers[i].map, this.markers[i]);
+         }
+         else {
+            match.close();  //Otherwise, close it.
+         }
       })
    }
 
@@ -296,3 +297,5 @@ const __loadScript = (url) => {
    script.defer = true
    index.parentNode.insertBefore(script, index)
 }
+
+export default MyApi

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import MyApi  from './MyApi'
+import {addButtonTrigger}  from './MyApi'
 
 class VenueList extends Component {
    constructor (props) {
@@ -12,7 +14,6 @@ class VenueList extends Component {
       this.venueID = ''
       // this.infowindow = props.infowindow
    }
-
    handleClick = (id) => {
       this.setState(props => {
          const list = props.list.map(venue => {
@@ -47,7 +48,7 @@ class VenueList extends Component {
       <ol className="venueList" id="venueList">
          { venues && venues.map((venues, idx) => (
 
-            <li key={idx} className={'venueItem'} id={venueID} >
+            <li key={idx} className={'venueItem'} id={venueID} onClick={event => this.props.addButtonTrigger(idx)}>
                {venues}
             </li>
             ))}
