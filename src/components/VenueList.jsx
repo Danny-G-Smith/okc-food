@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import MyApi  from './MyApi'
-import {addButtonTrigger}  from './MyApi'
+import AddButtonTrigger  from './AddButtonTrigger'
 
 class VenueList extends Component {
    constructor (props) {
@@ -12,7 +12,11 @@ class VenueList extends Component {
       this.id = 0
       this.list = []
       this.venueID = ''
-      // this.infowindow = props.infowindow
+
+      //this.state = {addButtonTrigger: idx}
+
+      // This binding is necessary to make `this` work in the callback
+      //this.addButtonTrigger = this.addButtonTrigger.bind(this);
    }
    handleClick = (id) => {
       this.setState(props => {
@@ -42,17 +46,9 @@ class VenueList extends Component {
    //console.log( match );
 
    render () {
-      const { venues, venue, venueID, idx, venueItem } = this.props
 
       return (
-      <ol className="venueList" id="venueList">
-         { venues && venues.map((venues, idx) => (
-
-            <li key={idx} className={'venueItem'} id={venueID} onClick={event => this.props.addButtonTrigger(idx)}>
-               {venues}
-            </li>
-            ))}
-         </ol>
+         <AddButtonTrigger />
       )
    }
 }

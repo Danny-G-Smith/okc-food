@@ -1,18 +1,22 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import SideBar from './SideBar'
-import VenueList from './VenueList'
+import AddButtonTrigger  from './AddButtonTrigger'
+//import VenueList from './VenueList'
 
 require('dotenv').config()
 
 class MyApi extends Component {
-   constructor(state) {
-      super(state)
-      this.addButtonTrigger = this.addButtonTrigger.bind(this);
+   constructor(props) {
+      super(props)
 
+   //this.state = {AddButtonTrigger: idx}
+
+   //This binding is necessary to make `this` work in the callback
+   //this.AddButtonTrigger = this.AddButtonTrigger.bind(this);
 
       // Instance properties
-      this.map = null        // Component wide access to map
+      //this.map = null        // Component wide access to map
       this.markers = []  // Component wide access to markers
       this.list = [] //
       this.infoWindows = []  // Component wide access to infoWindows
@@ -24,7 +28,7 @@ class MyApi extends Component {
 
    state = {
       idx: '',
-      markers: [],
+      map: '',
       names: [],
       searchString: '',
       short: [],
@@ -133,7 +137,7 @@ class MyApi extends Component {
       })
 
       this.setMarkers();  // Set markers
-      //this.setButtons();  // Set buttons
+      this.setButtons();  // Set buttons
    };
 
    // Set an infoWindow for each marker
@@ -178,7 +182,7 @@ class MyApi extends Component {
 
    // Set the markers based on the list items
    setMarkers = () => {
-      const { list, markers } = this.state;
+      const { list, markers, store_id } = this.state;
 
       // Iterate through the list items
       list.forEach(item => {
@@ -191,13 +195,15 @@ class MyApi extends Component {
                lng: item.venue.location.lng
             },
             map: this.map,
+            // store_id: venueID,
             animation: window.google.maps.Animation.DROP,
             name: item.venue.name,
             popup: item.popup
          })
 
+         console.log('id: ' + store_id)
          this.markers.push(marker);  // Add marker to list
-         this.setState({markers});
+         //this.setState({markers});
 
          this.setInfoWindow();   // Create and infoWindow for all of the markers
 
@@ -207,11 +213,13 @@ class MyApi extends Component {
             this.checkInfoWindows();          // Set the appropriate infoWindow
          })
       })
-      // if (markers) {
-      //    this.setState({markers});
-      // } else {
-      //    this.setState({markers: ''});
-      // }
+
+      if (markers) {
+         this.setState({markers});
+         this.state.markers = markers
+      } else {
+         this.setState({markers: ''});
+      }
 
    };
 
@@ -251,11 +259,18 @@ class MyApi extends Component {
       ))
    }
 
-   addButtonTrigger = (idx) => {
-      window.google.maps.event.trigger(this.state.markers[idx], "click")
-      this.state.markers[idx].setAnimation(window.google.maps.Animation.BOUNCE);
-   }
+   // addButtonTrigger = (idx) => {
+   //    window.google.maps.event.trigger(this.state.markers[idx], "click")
+   //    this.state.markers[idx].setAnimation(window.google.maps.Animation.BOUNCE);
+   // }
 
+   // addButtonTrigger = (idx) => {
+   //    window.google.maps.event.trigger(this.state.markers[idx], "click")
+   //    this.state.markers[idx].setAnimation(window.google.maps.Animation.BOUNCE);
+   // }
+
+
+   //
    // Handle data changes from map
    // componentDidUpdate = (state) => {
    //
@@ -280,7 +295,7 @@ class MyApi extends Component {
                      updateSearchString={this.updateSearchString}
             >
                {/*<input className="search"/>*/}
-               <VenueList {...this.state}/>
+               <AddButtonTrigger  {...this.state} {...this.props}  {...this.state.markers} {...this.markers} />
             </SideBar>
 
          </div>
@@ -299,3 +314,4 @@ const __loadScript = (url) => {
 }
 
 export default MyApi
+

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import VenueList from './VenueList'
+//import VenueList from './VenueList'
+import AddButtonTrigger  from './AddButtonTrigger'
 
 class SideBar extends Component {
    constructor (props) {
@@ -22,12 +23,7 @@ class SideBar extends Component {
                placeholder={"Filter Venues"}
                     onChange={(event) => this.props.updateSearchString(event.target.value)}
             />
-            <VenueList venues={venues}
-            >
-               <li key={idx} {...this.props}>
-                  {venues}
-               </li>
-            </VenueList>
+            <AddButtonTrigger {...this.props}  {...this.props.markers} {...this.props.venueID}/>
          </div>
       )
    }
