@@ -29,6 +29,7 @@ class MyApi extends Component {
    state = {
       idx: '',
       map: '',
+      markers: [],
       names: [],
       searchString: '',
       short: [],
@@ -182,7 +183,7 @@ class MyApi extends Component {
 
    // Set the markers based on the list items
    setMarkers = () => {
-      const { list, markers, store_id } = this.state;
+      const { list, markers } = this.state;
 
       // Iterate through the list items
       list.forEach(item => {
@@ -201,9 +202,7 @@ class MyApi extends Component {
             popup: item.popup
          })
 
-         console.log('id: ' + store_id)
          this.markers.push(marker);  // Add marker to list
-         //this.setState({markers});
 
          this.setInfoWindow();   // Create and infoWindow for all of the markers
 
@@ -216,7 +215,6 @@ class MyApi extends Component {
 
       if (markers) {
          this.setState({markers});
-         this.state.markers = markers
       } else {
          this.setState({markers: ''});
       }
@@ -251,58 +249,32 @@ class MyApi extends Component {
    }
 
    setButtons = () => {
-      const { venues, idx, markers } = this.props;
-      console.log('markers: ' + this.state.markers)
+      const { venues } = this.props;
       venues &&
       venues.map((venue, idx) => (
          this.addButtonTrigger()
       ))
    }
 
-   // addButtonTrigger = (idx) => {
-   //    window.google.maps.event.trigger(this.state.markers[idx], "click")
-   //    this.state.markers[idx].setAnimation(window.google.maps.Animation.BOUNCE);
-   // }
-
-   // addButtonTrigger = (idx) => {
-   //    window.google.maps.event.trigger(this.state.markers[idx], "click")
-   //    this.state.markers[idx].setAnimation(window.google.maps.Animation.BOUNCE);
-   // }
-
-
-   //
-   // Handle data changes from map
-   // componentDidUpdate = (state) => {
-   //
-   //    // List changes from filtering
-   //    if (this.state.list.length !== state.list.length) {
-   //       this.checkMarkers();  // Change the markers accordingly
-   //    }
-   //    // Possible changes to popup values
-   //    else if (this.state.list !== state.list) {
-   //       this.checkInfoWindows();  // Change the popups accordingly
-   //    }
-   // }
-
    render () {
+
       return (
          <div className="MyApi">
 
             {/*https://developers.google.com/maps/documentation/javascript/tutorial*/}
-            <div id="map"> </div>
-            <SideBar {...this.state}
+            <div id="map"  {...this.props.list} {...this.props.idx}> </div>
+            <SideBar {...this.props}
                      venues={this.state.names.filter(name => name.toLowerCase().includes(this.state.searchString.toLowerCase()))}
                      updateSearchString={this.updateSearchString}
             >
-               {/*<input className="search"/>*/}
-               <AddButtonTrigger  {...this.state} {...this.props}  {...this.state.markers} {...this.markers} />
+               <input className="search"/>
+               <AddButtonTrigger  {...this.props}/>
             </SideBar>
 
          </div>
       )
    }
 }
-
 
 const __loadScript = (url) => {
    var index = window.document.getElementsByTagName("script")[0]

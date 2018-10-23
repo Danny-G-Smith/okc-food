@@ -15,7 +15,8 @@ class SideBar extends Component {
    }
 
    render () {
-      const { venues, idx } = this.props;
+      // const { venues, idx } = this.props;
+
       return (
          <div className="sideBar">
             <input  type={"search"}
@@ -23,7 +24,7 @@ class SideBar extends Component {
                placeholder={"Filter Venues"}
                     onChange={(event) => this.props.updateSearchString(event.target.value)}
             />
-            <AddButtonTrigger {...this.props}  {...this.props.markers} {...this.props.venueID}/>
+            <AddButtonTrigger {...this.props}/>
          </div>
       )
    }
