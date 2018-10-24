@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import SideBar from './SideBar'
-import AddButtonTrigger  from './AddButtonTrigger'
+import AddButtonTrigger from './AddButtonTrigger'
+import Template from 'components/Template'
+
 //import VenueList from './VenueList'
 
 require('dotenv').config()
 
 class MyApi extends Component {
-   constructor(props) {
+   constructor (props) {
       super(props)
 
-   //this.state = {AddButtonTrigger: idx}
+      //this.state = {AddButtonTrigger: idx}
 
-   //This binding is necessary to make `this` work in the callback
-   //this.AddButtonTrigger = this.AddButtonTrigger.bind(this);
+      //This binding is necessary to make `this` work in the callback
+      //this.AddButtonTrigger = this.AddButtonTrigger.bind(this);
 
       // Instance properties
       //this.map = null        // Component wide access to map
@@ -28,6 +30,7 @@ class MyApi extends Component {
 
    state = {
       idx: '',
+      list: [],
       map: '',
       markers: [],
       names: [],
@@ -35,18 +38,20 @@ class MyApi extends Component {
       short: [],
       venueID: [],
       venues: [],
+      venue: ''
    }
 
    updateSearchString = (searchString) => {
       if (searchString) {
-         this.setState({searchString});
+         this.setState({searchString})
       } else {
-         this.setState({searchString: ''});
+         this.setState({searchString: ''})
       }
    }
 
    componentDidMount () {
       this.getVenues()
+      //this.addElement()
    }
 
    renderMap = () => {
@@ -107,27 +112,27 @@ class MyApi extends Component {
       this.setState(state => {
          const list = state.list.map(venue => {
             if (venue.venue.id === id) {
-               venue.popup = true;
+               venue.popup = true
             }
             else {
-               venue.popup = false;
+               venue.popup = false
             }
-            return venue;
+            return venue
          })
 
-         return ({list})
+         return ( {list} )
       })
-   };
+   }
 
    handleInput = (query) => {
-      this.setState(({ venues }) => {
-         const list = venues.filter(({ venue }) => {
-            return venue.name.toLowerCase().includes(query.toLowerCase());
+      this.setState(({venues}) => {
+         const list = venues.filter(({venue}) => {
+            return venue.name.toLowerCase().includes(query.toLowerCase())
          })
 
-         return ({ list });
+         return ( {list} )
       })
-   };
+   }
 
    // Initialize Google map
    initMap = () => {
@@ -137,29 +142,29 @@ class MyApi extends Component {
          zoom: 13
       })
 
-      this.setMarkers();  // Set markers
-      this.setButtons();  // Set buttons
-   };
+      this.setMarkers()  // Set markers
+      this.setButtons()  // Set buttons
+   }
 
    // Set an infoWindow for each marker
    setInfoWindow = () => {
       //Iterate through markers
       this.markers.forEach(marker => {
          // New infoWindow
-         let infoWindow = new window.google.maps.InfoWindow();
+         let infoWindow = new window.google.maps.InfoWindow()
 
          // Set content
          infoWindow.setContent(
-            `<p>${marker.name}</p>`);
+            `<p>${marker.name}</p>`)
 
          // Add to list of infoWindows
          this.infoWindows.push(infoWindow)
       })
-   };
+   }
 
    // Render the info windows based on list item popup property
    checkInfoWindows = () => {
-      const { list } = this.state;
+      const {list} = this.state
 
       // Iterate thorugh the list items
       list.forEach((item, i) => {
@@ -168,22 +173,22 @@ class MyApi extends Component {
          const match = this.infoWindows
             .find(infoWindow =>               // Search the infoWindow list
                infoWindow.content              // Check the content string
-                  .includes(item.venue.name));  // See if it includes the item name
+                  .includes(item.venue.name))  // See if it includes the item name
 
          // // If the item popup is true
          if (item.popup) {
             // Open infoWindow
-            match.open(this.markers[i].map, this.markers[i]);
+            match.open(this.markers[i].map, this.markers[i])
          }
          else {
-            match.close();  //Otherwise, close it.
+            match.close()  //Otherwise, close it.
          }
       })
    }
 
    // Set the markers based on the list items
    setMarkers = () => {
-      const { list, markers } = this.state;
+      const {list, markers} = this.state
 
       // Iterate through the list items
       list.forEach(item => {
@@ -196,60 +201,65 @@ class MyApi extends Component {
                lng: item.venue.location.lng
             },
             map: this.map,
-            // store_id: venueID,
+            store_id: item.venueID,
             animation: window.google.maps.Animation.DROP,
             name: item.venue.name,
             popup: item.popup
          })
 
-         this.markers.push(marker);  // Add marker to list
+         this.markers.push(marker)  // Add marker to list
 
-         this.setInfoWindow();   // Create and infoWindow for all of the markers
+         this.setInfoWindow()   // Create and infoWindow for all of the markers
 
          // Add marker click event listener
          marker.addListener('click', _ => {
-            this.handleClick(item.venue.id);  // Pass event to parent handler
-            this.checkInfoWindows();          // Set the appropriate infoWindow
+            this.handleClick(item.venue.id)  // Pass event to parent handler
+            this.checkInfoWindows()          // Set the appropriate infoWindow
          })
       })
 
       if (markers) {
-         this.setState({markers});
+         this.setState({markers})
       } else {
-         this.setState({markers: ''});
+         this.setState({markers: ''})
       }
 
-   };
+      markers &&
+      markers.map((markers, idx) => (
+         this.addButtonTrigger()
+      ))
+
+   }
 
    // Check the which markers should be rendered
    checkMarkers = () => {
-      const { list } = this.state;
+      const {list} = this.state
 
       // Create an array of all the current list items names
-      const listNames = list.map(item => item.venue.name);
+      const listNames = list.map(item => item.venue.name)
 
       // Iterate through the markers
       this.markers.forEach(marker => {
 
          // If the current marker does not match one of the list items
          if (!listNames.includes(marker.name)) {
-            marker.setVisible(false);     // Remove it
+            marker.setVisible(false)     // Remove it
 
             // Find the matching infoWindow
             this.infoWindows
                .find(infoWindow =>         // Search the list of infoWindows
                   infoWindow.content        // Compare the content string
                      .includes(marker.name)) // with the current marker's name
-               .close();                   // Ensure that infoWindow is closed
+               .close()                   // Ensure that infoWindow is closed
          }
          else {
-            marker.setVisible(true);      // Otherwise, make the marker visible
+            marker.setVisible(true)      // Otherwise, make the marker visible
          }
       })
    }
 
    setButtons = () => {
-      const { venues } = this.props;
+      const {venues} = this.props
       venues &&
       venues.map((venue, idx) => (
          this.addButtonTrigger()
@@ -262,13 +272,15 @@ class MyApi extends Component {
          <div className="MyApi">
 
             {/*https://developers.google.com/maps/documentation/javascript/tutorial*/}
-            <div id="map"  {...this.props.list} {...this.props.idx}> </div>
+            <div id="map"  {...this.props.list} {...this.props.idx}></div>
             <SideBar {...this.props}
                      venues={this.state.names.filter(name => name.toLowerCase().includes(this.state.searchString.toLowerCase()))}
                      updateSearchString={this.updateSearchString}
             >
                <input className="search"/>
-               <AddButtonTrigger  {...this.props}/>
+               <AddButtonTrigger  {...this.state} {...this.state.idx}>
+
+               </AddButtonTrigger>
             </SideBar>
 
          </div>
@@ -277,8 +289,8 @@ class MyApi extends Component {
 }
 
 const __loadScript = (url) => {
-   var index = window.document.getElementsByTagName("script")[0]
-   var script = window.document.createElement("script")
+   var index = window.document.getElementsByTagName('script')[0]
+   var script = window.document.createElement('script')
    script.src = url
    script.async = true
    script.defer = true

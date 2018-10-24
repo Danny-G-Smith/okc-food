@@ -1,10 +1,21 @@
 import React, { Component } from 'react'
+import MyApi from './MyApi'
+
 // import { markers, setInfoWindow } from './MyApi'
 
 class AddButtonTrigger extends Component {
    constructor (props) {
       super(props)
 
+      this.state = {
+         query: ''
+      }
+   }
+
+   handleChange = (e) => {
+      const query = e.target.value;
+      this.setState({ query });
+      this.props.handleInput(query);
    }
 
    state = {
@@ -27,20 +38,23 @@ class AddButtonTrigger extends Component {
    }
 
    render () {
-      const {list, venueID, markers} = this.props
+      const {list, venueID, markers, venues, idx} = this.props
 
       return (
          <ol className="venueList">
-            {list &&
-            list.map((list, idx) => (
-               <li key={idx}
-                  className={'venueItem button'}
+            {this.props.venues &&
+             this.props.venues.map((venues, idx) => (
+               <li key={this.props.idx}
+
+                   className={'venueItem'}
                   id={venueID}
-                   role="button" tabIndex="0"
-                   onClick={event => markers[idx]}>
-                  {list[idx]}
-            </li>
-         ))}
+                  role="button" tabIndex="0"
+                  onClick={ () => this.props.markers[idx]}
+                  {...idx} {...venueID} {...list}
+               >
+                  {this.props.venues[idx]}
+               </li>
+               ))}
          </ol>
       )
    }
