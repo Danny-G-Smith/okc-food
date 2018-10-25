@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-//import VenueList from './VenueList'
 import AddButtonTrigger  from './AddButtonTrigger'
 
 class SideBar extends Component {
@@ -10,8 +9,6 @@ class SideBar extends Component {
       this.idx = ''
       this.venue = ''
       this.id = 0
-      // this.markers = props.markers
-      // this.infowindow = props.infowindow
    }
 
    render () {

@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import MyApi from './MyApi'
 
-// import { markers, setInfoWindow } from './MyApi'
-
 class AddButtonTrigger extends Component {
    constructor (props) {
       super(props)
+      //this.AddButtonTrigger = this.AddButtonTrigger.bind(this);
 
       this.state = {
          query: ''
       }
+
+      // Instance properties
+      this.idx = ''           // Component wide access to markers
+      this.venueID = ''           // Component wide access to markers
+      this.list = []       // Component wide access to markers
+      this.markers = []       // Component wide access to markers
    }
 
    handleChange = (e) => {
@@ -18,39 +23,29 @@ class AddButtonTrigger extends Component {
       this.props.handleInput(query);
    }
 
-   state = {
-      idx: '',
-      names: [],
-      list: [],
-      short: [],
-      venueID: [],
-      venues: [],
-      venue: '',
-   }
+   // https://stackoverflow.com/questions/9194579/how-to-simulate-a-click-on-a-google-maps-marker
+   triggerMarker = (idx) => {
 
-   AddButtonTrigger () {
-      const {list, idx} = this.props
-
-      console.log('list[idx] ' + list[idx])
-      console.log('idx ' + idx)
-      window.google.maps.event.trigger(list[idx], 'click')
-      //this.props.markers[idx].setAnimation(window.google.maps.Animation.BOUNCE)
+      window.google.maps.event.trigger(this.props.markers[idx], "click")
+      console.log(this.props.markers[idx])
+      //this.props.markers[idx].setAnimation(window.google.maps.Animation.BOUNCE);
    }
 
    render () {
-      const {list, venueID, markers, venues, idx} = this.props
+      const {list, venueID, venues, idx, markers} = this.props
+
 
       return (
          <ol className="venueList">
-            {this.props.venues &&
-             this.props.venues.map((venues, idx) => (
-               <li key={this.props.idx}
 
+            {this.props.venues &&
+            this.props.venues.map((venues, idx) => (
+               <li key={idx}
+                   markers={this.props.markers}
                    className={'venueItem'}
-                  id={venueID}
+                  id={this.props.venueID}
                   role="button" tabIndex="0"
-                  onClick={ () => this.props.markers[idx]}
-                  {...idx} {...venueID} {...list}
+                  onClick={event => this.triggerMarker(idx)}
                >
                   {this.props.venues[idx]}
                </li>

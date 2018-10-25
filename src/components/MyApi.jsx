@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import SideBar from './SideBar'
 import AddButtonTrigger from './AddButtonTrigger'
-import Template from 'components/Template'
 
 //import VenueList from './VenueList'
 
@@ -11,16 +10,12 @@ require('dotenv').config()
 class MyApi extends Component {
    constructor (props) {
       super(props)
-
-      //this.state = {AddButtonTrigger: idx}
-
-      //This binding is necessary to make `this` work in the callback
       //this.AddButtonTrigger = this.AddButtonTrigger.bind(this);
 
       // Instance properties
-      //this.map = null        // Component wide access to map
       this.markers = []  // Component wide access to markers
       this.list = [] //
+      this.idx = '' //
       this.infoWindows = []  // Component wide access to infoWindows
       this.google_map = `${process.env.REACT_APP_google_map}`
       this.center = `${process.env.REACT_APP_center}`
@@ -51,6 +46,7 @@ class MyApi extends Component {
 
    componentDidMount () {
       this.getVenues()
+
       //this.addElement()
    }
 
@@ -226,8 +222,11 @@ class MyApi extends Component {
 
       markers &&
       markers.map((markers, idx) => (
-         this.addButtonTrigger()
+         this.AddButtonTrigger()
       ))
+
+      // Create an array of all the current list items names
+      const listMarkers = markers.map(item => item.markers)
 
    }
 
@@ -273,12 +272,12 @@ class MyApi extends Component {
 
             {/*https://developers.google.com/maps/documentation/javascript/tutorial*/}
             <div id="map"  {...this.props.list} {...this.props.idx}></div>
-            <SideBar {...this.props}
+            <SideBar {...this.state}
                      venues={this.state.names.filter(name => name.toLowerCase().includes(this.state.searchString.toLowerCase()))}
                      updateSearchString={this.updateSearchString}
             >
                <input className="search"/>
-               <AddButtonTrigger  {...this.state} {...this.state.idx}>
+               <AddButtonTrigger  {...this.state} {...this.state.idx} {...this.state.markers}>
 
                </AddButtonTrigger>
             </SideBar>
