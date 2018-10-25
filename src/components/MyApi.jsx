@@ -22,6 +22,8 @@ class MyApi extends Component {
       this.center = `${process.env.REACT_APP_center}`
       this.center_lat = parseFloat(`${process.env.REACT_APP_center_lat}`)
       this.center_lng = parseFloat(`${process.env.REACT_APP_center_lng}`)
+      this.contentString = []
+      //this.props.contentString = this.contentString
    }
 
    state = {
@@ -150,7 +152,16 @@ class MyApi extends Component {
          // New infoWindow
          let infoWindow = new window.google.maps.InfoWindow()
 
+         // this.props.contentString =
+         //    `${marker.venue.name + '<br>' +
+         //    marker.venue.location.formattedAddress[0] + '<br>' +
+         //    marker.venue.location.formattedAddress[1] + '<br>' +
+         //    marker.venue.location.formattedAddress[2] + '<br>'
+         //       }`
+
+
          // Set content
+         infoWindow.content = this.props.contentString
          infoWindow.setContent(
             `<p>${marker.name}</p>`)
 
@@ -185,10 +196,10 @@ class MyApi extends Component {
 
    // Set the markers based on the list items
    setMarkers = () => {
-      const {list, markers} = this.state
+      const {venues, markers} = this.state
 
-      // Iterate through the list items
-      list.forEach(item => {
+      // Iterate through the venuesitems
+      venues.forEach(item => {
 
          // Create new marker with info of current list item
          let marker = new window.google.maps.Marker({
@@ -201,7 +212,10 @@ class MyApi extends Component {
             store_id: item.venueID,
             animation: window.google.maps.Animation.DROP,
             name: item.venue.name,
-            popup: item.popup
+            popup: item.popup,
+            icon: {
+               url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
+            }
          })
          //console.log("marker: ", marker)
 
