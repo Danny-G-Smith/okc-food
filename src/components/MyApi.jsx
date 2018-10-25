@@ -14,6 +14,7 @@ class MyApi extends Component {
 
       // Instance properties
       this.markers = []  // Component wide access to markers
+      this.listMarkers = []
       this.list = [] //
       this.idx = '' //
       this.infoWindows = []  // Component wide access to infoWindows
@@ -145,7 +146,7 @@ class MyApi extends Component {
    // Set an infoWindow for each marker
    setInfoWindow = () => {
       //Iterate through markers
-      this.markers.forEach(marker => {
+      this.state.markers.forEach(marker => {
          // New infoWindow
          let infoWindow = new window.google.maps.InfoWindow()
 
@@ -163,7 +164,7 @@ class MyApi extends Component {
       const {list} = this.state
 
       // Iterate thorugh the list items
-      list.forEach((item, i) => {
+      list.forEach((item, k) => {
 
          // Find the matching infoWindow for the current item
          const match = this.infoWindows
@@ -174,7 +175,7 @@ class MyApi extends Component {
          // // If the item popup is true
          if (item.popup) {
             // Open infoWindow
-            match.open(this.markers[i].map, this.markers[i])
+            match.open(this.state.markers[k].map, this.state.markers[k])
          }
          else {
             match.close()  //Otherwise, close it.
@@ -202,8 +203,9 @@ class MyApi extends Component {
             name: item.venue.name,
             popup: item.popup
          })
+         //console.log("marker: ", marker)
 
-         this.markers.push(marker)  // Add marker to list
+         this.state.markers.push(marker)  // Add marker to list
 
          this.setInfoWindow()   // Create and infoWindow for all of the markers
 
@@ -220,14 +222,9 @@ class MyApi extends Component {
          this.setState({markers: ''})
       }
 
-      markers &&
-      markers.map((markers, idx) => (
-         this.AddButtonTrigger()
-      ))
-
-      // Create an array of all the current list items names
-      const listMarkers = markers.map(item => item.markers)
-
+      // // Create an array of all the current list items names
+      // const listMarkers = markers.map(item => item.markers)
+      // console.log(listMarkers)
    }
 
    // Check the which markers should be rendered
@@ -238,7 +235,7 @@ class MyApi extends Component {
       const listNames = list.map(item => item.venue.name)
 
       // Iterate through the markers
-      this.markers.forEach(marker => {
+      this.state.markers.forEach(marker => {
 
          // If the current marker does not match one of the list items
          if (!listNames.includes(marker.name)) {
@@ -277,7 +274,7 @@ class MyApi extends Component {
                      updateSearchString={this.updateSearchString}
             >
                <input className="search"/>
-               <AddButtonTrigger  {...this.state} {...this.state.idx} {...this.state.markers}>
+               <AddButtonTrigger  {...this.state} {...this.state.idx} {...this.state.markers} markers={this.props.markers}>
 
                </AddButtonTrigger>
             </SideBar>

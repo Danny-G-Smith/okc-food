@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import MyApi from './MyApi'
+//import MyApi from './MyApi'
 
 class AddButtonTrigger extends Component {
    constructor (props) {
@@ -32,7 +32,7 @@ class AddButtonTrigger extends Component {
    }
 
    render () {
-      const {list, venueID, venues, idx, markers} = this.props
+      //const {list, venueID, venues, idx, markers} = this.props
 
 
       return (
@@ -42,6 +42,7 @@ class AddButtonTrigger extends Component {
             this.props.venues.map((venues, idx) => (
                <li key={idx}
                    markers={this.props.markers}
+                   mymarkers={this.props.mymarkers}
                    className={'venueItem'}
                   id={this.props.venueID}
                   role="button" tabIndex="0"
