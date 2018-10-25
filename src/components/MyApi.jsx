@@ -1,56 +1,38 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import SideBar from './SideBar'
-import AddButtonTrigger from './AddButtonTrigger'
+// import AddButtonTrigger from './AddButtonTrigger'
 
 //import VenueList from './VenueList'
 
 require('dotenv').config()
 
 class MyApi extends Component {
-   constructor (props) {
-      super(props)
+   constructor(props) {
+      super(props);
       //this.AddButtonTrigger = this.AddButtonTrigger.bind(this);
 
+      this.state = {
+         list: [],
+         venues: [],
+      }
+
       // Instance properties
-      this.markers = []  // Component wide access to markers
-      this.listMarkers = []
-      this.list = [] //
-      this.idx = '' //
-      this.infoWindows = []  // Component wide access to infoWindows
       this.google_map = `${process.env.REACT_APP_google_map}`
-      this.center = `${process.env.REACT_APP_center}`
-      this.center_lat = parseFloat(`${process.env.REACT_APP_center_lat}`)
-      this.center_lng = parseFloat(`${process.env.REACT_APP_center_lng}`)
-      this.contentString = []
-      //this.props.contentString = this.contentString
    }
 
-   state = {
-      idx: '',
-      list: [],
-      map: '',
-      markers: [],
-      names: [],
-      searchString: '',
-      short: [],
-      venueID: [],
-      venues: [],
-      venue: ''
-   }
+
 
    updateSearchString = (searchString) => {
       if (searchString) {
-         this.setState({searchString})
+         this.setState({ searchString })
       } else {
-         this.setState({searchString: ''})
+         this.setState({ searchString: '' })
       }
    }
 
-   componentDidMount () {
+   componentDidMount() {
       this.getVenues()
-
-      //this.addElement()
    }
 
    renderMap = () => {
@@ -93,12 +75,7 @@ class MyApi extends Component {
       )
          .then(response => {
             this.setState({
-               address: response.data.response.groups[0].items.map(element => element.venue.location.formattedAddress),
-               list: response.data.response.groups[0].items,
-               names: response.data.response.groups[0].items.map(element => element.venue.name),
-               short: response.data.response.groups[0].items.map(element => element.venue.categories[0].shortName),
-               venueID: response.data.response.groups[0].items.map(element => element.venue.id),
-               venues: response.data.response.groups[0].items
+               venues: response.data.response.groups[0].items.map(element => element.venue)
             }, this.renderMap())
 
          })
@@ -107,29 +84,39 @@ class MyApi extends Component {
          })
    }
 
-   handleClick = (id) => {
-      this.setState(state => {
-         const list = state.list.map(venue => {
-            if (venue.venue.id === id) {
-               venue.popup = true
-            }
-            else {
-               venue.popup = false
-            }
-            return venue
-         })
+   handleClick = (venue) => {
+      const { marker, infoWindow } = venue;
 
-         return ( {list} )
+      this.state.venues.forEach(({marker : m, infoWindow: i}) => {
+         if (m === marker) {
+            marker.setAnimation(window.google.maps.Animation.BOUNCE);
+            infoWindow.open(marker.map, marker);
+         }
+         else {
+            m.setAnimation('none');
+            i.close();
+         }
       })
    }
 
    handleInput = (query) => {
-      this.setState(({venues}) => {
-         const list = venues.filter(({venue}) => {
+
+      this.setState(({ venues }) => {
+         const list = venues.filter(( venue ) => {
             return venue.name.toLowerCase().includes(query.toLowerCase())
          })
 
-         return ( {list} )
+         const v = venues.map(venue => {
+            if (!list.includes(venue)) {
+               venue.marker.setVisible(false);
+               venue.infoWindow.close();
+            }
+            else {
+               venue.marker.setVisible(true);
+            }
+         })
+
+         return ({ list })
       })
    }
 
@@ -137,162 +124,91 @@ class MyApi extends Component {
    initMap = () => {
       //const { lat, lng } = this.state.center;
       this.map = new window.google.maps.Map(document.getElementById('map'), {
-         center: {lat: 35.52248, lng: -97.619255},
+         center: { lat: 35.52248, lng: -97.619255 },
          zoom: 13
       })
 
       this.setMarkers()  // Set markers
-      this.setButtons()  // Set buttons
+      // this.setButtons()  // Set buttons
    }
 
    // Set an infoWindow for each marker
    setInfoWindow = () => {
-      //Iterate through markers
-      this.state.markers.forEach(marker => {
-         // New infoWindow
-         let infoWindow = new window.google.maps.InfoWindow()
+      this.setState(state => {
+         //Iterate through markers
+         const venues = state.venues.map(venue => {
+            // console.log(venue)
+            // New infoWindow
+            let infoWindow = new window.google.maps.InfoWindow()
 
-         // this.props.contentString =
-         //    `${marker.venue.name + '<br>' +
-         //    marker.venue.location.formattedAddress[0] + '<br>' +
-         //    marker.venue.location.formattedAddress[1] + '<br>' +
-         //    marker.venue.location.formattedAddress[2] + '<br>'
-         //       }`
+            // Set content
+            infoWindow.setContent(
+               `<p>${venue.name}</p>`)
 
+            // Add to list of infoWindows
+            venue.infoWindow = infoWindow
+            return venue;
+         })
 
-         // Set content
-         infoWindow.content = this.props.contentString
-         infoWindow.setContent(
-            `<p>${marker.name}</p>`)
+         return ({ venues, list: venues });
 
-         // Add to list of infoWindows
-         this.infoWindows.push(infoWindow)
-      })
-   }
-
-   // Render the info windows based on list item popup property
-   checkInfoWindows = () => {
-      const {list} = this.state
-
-      // Iterate thorugh the list items
-      list.forEach((item, k) => {
-
-         // Find the matching infoWindow for the current item
-         const match = this.infoWindows
-            .find(infoWindow =>               // Search the infoWindow list
-               infoWindow.content              // Check the content string
-                  .includes(item.venue.name))  // See if it includes the item name
-
-         // // If the item popup is true
-         if (item.popup) {
-            // Open infoWindow
-            match.open(this.state.markers[k].map, this.state.markers[k])
-         }
-         else {
-            match.close()  //Otherwise, close it.
-         }
       })
    }
 
    // Set the markers based on the list items
    setMarkers = () => {
-      const {venues, markers} = this.state
+      //const { venues, markers } = this.state
 
-      // Iterate through the venuesitems
-      venues.forEach(item => {
+      // Iterate through the list items
 
-         // Create new marker with info of current list item
-         let marker = new window.google.maps.Marker({
+      this.setState(state => {
 
-            position: {
-               lat: item.venue.location.lat,
-               lng: item.venue.location.lng
-            },
-            map: this.map,
-            store_id: item.venueID,
-            animation: window.google.maps.Animation.DROP,
-            name: item.venue.name,
-            popup: item.popup,
-            icon: {
-               url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
-            }
+         const venues = state.venues.map(item => {
+
+            // Create new marker with info of current list item
+            let marker = new window.google.maps.Marker({
+
+               position: {
+                  lat: item.location.lat,
+                  lng: item.location.lng
+               },
+               map: this.map,
+               store_id: item.venueID,
+               animation: window.google.maps.Animation.DROP,
+               name: item.name,
+            })
+
+            item.marker = marker  // Add marker to list
+
+            // Add marker click event listener
+            marker.addListener('click', _ => {
+               this.handleClick(item)  // Pass event to parent handler
+               // this.checkInfoWindows()          // Set the appropriate infoWindow
+            })
+
+            return item;
          })
-         //console.log("marker: ", marker)
 
-         this.state.markers.push(marker)  // Add marker to list
-
-         this.setInfoWindow()   // Create and infoWindow for all of the markers
-
-         // Add marker click event listener
-         marker.addListener('click', _ => {
-            this.handleClick(item.venue.id)  // Pass event to parent handler
-            this.checkInfoWindows()          // Set the appropriate infoWindow
-         })
+         return ({ venues });
       })
 
-      if (markers) {
-         this.setState({markers})
-      } else {
-         this.setState({markers: ''})
-      }
+      this.setInfoWindow()   // Create and infoWindow for all of the markers
 
-      // // Create an array of all the current list items names
-      // const listMarkers = markers.map(item => item.markers)
-      // console.log(listMarkers)
    }
 
-   // Check the which markers should be rendered
-   checkMarkers = () => {
-      const {list} = this.state
-
-      // Create an array of all the current list items names
-      const listNames = list.map(item => item.venue.name)
-
-      // Iterate through the markers
-      this.state.markers.forEach(marker => {
-
-         // If the current marker does not match one of the list items
-         if (!listNames.includes(marker.name)) {
-            marker.setVisible(false)     // Remove it
-
-            // Find the matching infoWindow
-            this.infoWindows
-               .find(infoWindow =>         // Search the list of infoWindows
-                  infoWindow.content        // Compare the content string
-                     .includes(marker.name)) // with the current marker's name
-               .close()                   // Ensure that infoWindow is closed
-         }
-         else {
-            marker.setVisible(true)      // Otherwise, make the marker visible
-         }
-      })
-   }
-
-   setButtons = () => {
-      const {venues} = this.props
-      venues &&
-      venues.map((venue, idx) => (
-         this.addButtonTrigger()
-      ))
-   }
-
-   render () {
-
+   render() {
       return (
          <div className="MyApi">
 
             {/*https://developers.google.com/maps/documentation/javascript/tutorial*/}
-            <div id="map"  {...this.props.list} {...this.props.idx}></div>
-            <SideBar {...this.state}
-                     venues={this.state.names.filter(name => name.toLowerCase().includes(this.state.searchString.toLowerCase()))}
-                     updateSearchString={this.updateSearchString}
-            >
-               <input className="search"/>
-               <AddButtonTrigger  {...this.state} {...this.state.idx} {...this.state.markers} markers={this.props.markers}>
-
-               </AddButtonTrigger>
-            </SideBar>
-
+            <div id="map"></div>
+            <SideBar
+               {...this.state}
+               venues={this.state.list}
+               updateSearchString={this.updateSearchString}
+               handleClick={this.handleClick}
+               handleInput={this.handleInput}
+            />
          </div>
       )
    }

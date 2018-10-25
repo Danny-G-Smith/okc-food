@@ -1,27 +1,32 @@
 import React, { Component } from 'react'
-import AddButtonTrigger  from './AddButtonTrigger'
+import AddButtonTrigger from './AddButtonTrigger'
 
 class SideBar extends Component {
-   constructor (props) {
+   constructor(props) {
       super(props)
 
-      // Instance properties
-      this.idx = ''
-      this.venue = ''
-      this.id = 0
+      this.state = {
+         query: ''
+      }
    }
 
-   render () {
-      // const { venues, idx } = this.props;
+   handleChange = (e) => {
+      const query = e.target.value;
+      this.setState({ query });
+      this.props.handleInput(query);
+   }
 
+   render() {
+      // const { venues, idx } = this.props;
       return (
          <div className="sideBar">
-            <input  type={"search"}
-                    id={"search"}
-               placeholder={"Filter Venues"}
-                    onChange={(event) => this.props.updateSearchString(event.target.value)}
+            <input type={"search"}
+                   id={"search"}
+                   placeholder={"Filter Venues"}
+                   value={this.state.query}
+                   onChange={this.handleChange}
             />
-            <AddButtonTrigger {...this.props}/>
+            <AddButtonTrigger {...this.props} />
          </div>
       )
    }
