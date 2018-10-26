@@ -8,8 +8,8 @@ import SideBar from './SideBar'
 require('dotenv').config()
 
 class MyApi extends Component {
-   constructor(props) {
-      super(props);
+   constructor (props) {
+      super(props)
       //this.AddButtonTrigger = this.AddButtonTrigger.bind(this);
 
       this.state = {
@@ -21,17 +21,15 @@ class MyApi extends Component {
       this.google_map = `${process.env.REACT_APP_google_map}`
    }
 
-
-
    updateSearchString = (searchString) => {
       if (searchString) {
-         this.setState({ searchString })
+         this.setState({searchString})
       } else {
-         this.setState({ searchString: '' })
+         this.setState({searchString: ''})
       }
    }
 
-   componentDidMount() {
+   componentDidMount () {
       this.getVenues()
    }
 
@@ -85,38 +83,41 @@ class MyApi extends Component {
    }
 
    handleClick = (venue) => {
-      const { marker, infoWindow } = venue;
+      const {marker, infoWindow} = venue
 
-      this.state.venues.forEach(({marker : m, infoWindow: i}) => {
+      this.state.venues.forEach(({marker: m, infoWindow: i}) => {
          if (m === marker) {
-            marker.setAnimation(window.google.maps.Animation.BOUNCE);
-            infoWindow.open(marker.map, marker);
-         }
-         else {
-            m.setAnimation('none');
-            i.close();
+            marker.setAnimation(window.google.maps.Animation.BOUNCE)
+            infoWindow.open(marker.map, marker)
+
+            window.google.maps.event.addListener(infoWindow, 'closeclick', function () {
+               marker.setAnimation(null)
+            })
+         } else {
+            m.setAnimation('none')
+            i.close()
          }
       })
    }
 
    handleInput = (query) => {
 
-      this.setState(({ venues }) => {
-         const list = venues.filter(( venue ) => {
+      this.setState(({venues}) => {
+         const list = venues.filter((venue) => {
             return venue.name.toLowerCase().includes(query.toLowerCase())
          })
 
          const v = venues.map(venue => {
             if (!list.includes(venue)) {
-               venue.marker.setVisible(false);
-               venue.infoWindow.close();
+               venue.marker.setVisible(false)
+               venue.infoWindow.close()
             }
             else {
-               venue.marker.setVisible(true);
+               venue.marker.setVisible(true)
             }
          })
 
-         return ({ list })
+         return ( {list} )
       })
    }
 
@@ -124,7 +125,7 @@ class MyApi extends Component {
    initMap = () => {
       //const { lat, lng } = this.state.center;
       this.map = new window.google.maps.Map(document.getElementById('map'), {
-         center: { lat: 35.52248, lng: -97.619255 },
+         center: {lat: 35.52248, lng: -97.619255},
          zoom: 13
       })
 
@@ -143,14 +144,20 @@ class MyApi extends Component {
 
             // Set content
             infoWindow.setContent(
-               `<p>${venue.name}</p>`)
+               //`<p>${venue.name}</p>`
+               `${'<h3>' + venue.name + '</h3><br>' +
+               venue.location.formattedAddress[0] + '<br>' +
+               venue.location.formattedAddress[1] + '<br>' +
+               venue.location.formattedAddress[2] + '<br>'
+                  }`
+            )
 
             // Add to list of infoWindows
             venue.infoWindow = infoWindow
-            return venue;
+            return venue
          })
 
-         return ({ venues, list: venues });
+         return ( {venues, list: venues} )
 
       })
    }
@@ -176,6 +183,9 @@ class MyApi extends Component {
                store_id: item.venueID,
                animation: window.google.maps.Animation.DROP,
                name: item.name,
+               icon: {
+                  url: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+               }
             })
 
             item.marker = marker  // Add marker to list
@@ -186,17 +196,17 @@ class MyApi extends Component {
                // this.checkInfoWindows()          // Set the appropriate infoWindow
             })
 
-            return item;
+            return item
          })
 
-         return ({ venues });
+         return ( {venues} )
       })
 
       this.setInfoWindow()   // Create and infoWindow for all of the markers
 
    }
 
-   render() {
+   render () {
       return (
          <div className="MyApi">
 

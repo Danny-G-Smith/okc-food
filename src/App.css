@@ -132,3 +132,19 @@ input[type=search]:not(.browser-default) {
    background-color: #b2dfdb;
    cursor: pointer;
 }
+
+div.gm-style-iw {
+   font-size: 16px !important;
+   font-weight: 300;
+   line-height: 1.4;
+   left: 15px;
+   overflow: hidden;
+   position: absolute;
+   top: 9px;
+   width: 130px;
+}
+div.gm-style-iw h3 {
+   margin: 16px 0 0;
+   font-size: 24px !important;
+   font-weight: bold !important;
+}
