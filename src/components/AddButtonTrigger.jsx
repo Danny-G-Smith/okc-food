@@ -29,12 +29,15 @@ class AddButtonTrigger extends Component {
 
       return (
          <>
-            <SideNav className="venueList"
+            <SideNav className="venueList sidenav fixed"
                      options={{
-                        //triggerView: 'showOnLarge',
+                        triggerView: 'showOnLarge',
+                        showOnLarge: true,
                         edge: 'right',
-                        preventScrolling: 'false',
-                        closeOnClick: true
+                        preventScrolling: false,
+                        closeOnClick: true,
+                        fixed: true,
+                        isFixed: true
                      }}
                      trigger={<Button>VENUE</Button>}
             >

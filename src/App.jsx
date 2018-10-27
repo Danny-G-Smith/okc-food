@@ -30,7 +30,7 @@ class App extends Component {
             <div className="App">
                <MyApi/>
             </div>
-            <Footer copyrights="&copy 2018 Copyright Text"
+            <Footer copyrights="&copy; 2018 Copyright Text"
                     moreLinks={
                        <a className="grey-text text-lighten-4 right" href="#!">More Links</a>
                     }>

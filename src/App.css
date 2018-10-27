@@ -26,7 +26,6 @@
 }
 
 #header {
-   width: calc(100vw - 320px);
    position: fixed;
    top: 0;
    height: 44px;
@@ -38,6 +37,18 @@
    top: 44px;
    height: calc(100vh - 83px);
    width: calc(100vw ) !important;
+}
+
+footer,
+#map {
+   width: calc(100vw) !important;
+}
+
+/*This applies from 1240px onwards*/
+@media only screen and (min-width: 360px) {
+   #header {
+      width: calc(100vw - 320px) !important;
+   }
 }
 
 .sideBar {
