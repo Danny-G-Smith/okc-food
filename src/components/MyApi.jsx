@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import SideBar from './SideBar'
-// import AddButtonTrigger from './AddButtonTrigger'
-
-//import VenueList from './VenueList'
 
 require('dotenv').config()
 
 class MyApi extends Component {
    constructor (props) {
       super(props)
-      //this.AddButtonTrigger = this.AddButtonTrigger.bind(this);
 
       this.state = {
          list: [],
@@ -61,14 +57,12 @@ class MyApi extends Component {
       const explore = 'https://api.foursquare.com/v2/venues/explore?'
       const list = 'https://api.foursquare.com/v2/venues/'
       const search = 'https://api.foursquare.com/v2/venues/search?'
-      const short = 'https://api.foursquare.com/v2/venues/'
       const venues = 'https://api.foursquare.com/v2/venues/'
 
       axios.get(
          explore + new URLSearchParams(parameters),
          list + new URLSearchParams(parameters),
          search + new URLSearchParams(parameters),
-         short + new URLSearchParams(parameters),
          venues + new URLSearchParams(parameters),
       )
          .then(response => {
@@ -203,7 +197,6 @@ class MyApi extends Component {
       })
 
       this.setInfoWindow()   // Create and infoWindow for all of the markers
-
    }
 
    render () {
@@ -219,6 +212,8 @@ class MyApi extends Component {
                handleClick={this.handleClick}
                handleInput={this.handleInput}
             />
+
+
          </div>
       )
    }

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import AddButtonTrigger from './AddButtonTrigger'
 
+
 class SideBar extends Component {
-   constructor(props) {
+   constructor (props) {
       super(props)
 
       this.state = {
@@ -11,25 +12,25 @@ class SideBar extends Component {
    }
 
    handleChange = (e) => {
-      const query = e.target.value;
-      this.setState({ query });
-      this.props.handleInput(query);
+      const query = e.target.value
+      this.setState({query})
+      this.props.handleInput(query)
    }
 
-   render() {
-      // const { venues, idx } = this.props;
-      return (
-         <div className="sideBar">
-            <input type={"search"}
-                   id={"search"}
-                   placeholder={"Filter Venues"}
-                   value={this.state.query}
-                   onChange={this.handleChange}
-            />
-            <AddButtonTrigger {...this.props} />
-         </div>
-      )
-   }
-}
-export default SideBar;
+            render() {
+               // const { venues, idx } = this.props;
+               return (
+               <div className="sideBar">
+               <input type={'search'}
+               id={'search'}
+               placeholder={'Filter Venues'}
+               value={this.state.query}
+               onChange={this.handleChange}
+               />
+               <AddButtonTrigger {...this.props} />
+               </div>
+               )
+            }
+            }
+            export default SideBar;
 

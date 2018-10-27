@@ -22,7 +22,6 @@ class App extends Component {
             {/*https://react-materialize.github.io/#/*/}
             <Navbar brand='logo'>
                <NavItem onClick={() => console.log('test click')}>Getting started</NavItem>
-               <NavItem href='components.html'>Components</NavItem>
             </Navbar>
 
             {/*<Toast toast="here you go!">*/}
