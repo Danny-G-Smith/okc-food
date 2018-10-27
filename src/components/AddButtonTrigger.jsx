@@ -1,9 +1,21 @@
 import React, { Component } from 'react'
-import { SideNav, Button } from 'react-materialize'
+import { SideNav, SideNavItem, Button } from 'react-materialize'
 
 //import MyApi from './MyApi'
 
 class AddButtonTrigger extends Component {
+   constructor (props) {
+      super(props)
+
+      // Instance properties
+      //this.props.isFixed = true
+
+      // this.options = {
+      //    'edge': 'right',
+      //
+      //    'showOnLarge': 'PropTypes.bool'
+      // }
+   }
 
    handleChange = (e) => {
       const query = e.target.value
@@ -16,22 +28,36 @@ class AddButtonTrigger extends Component {
    render () {
 
       return (
-            <ol className="venueList">
+         <>
+            <SideNav className="venueList"
+                     options={{
+                        //triggerView: 'showOnLarge',
+                        edge: 'right',
+                        preventScrolling: 'false',
+                        closeOnClick: true
+                     }}
+                     trigger={<Button>VENUE</Button>}
+            >
 
-               {this.props.venues &&
-               this.props.venues.map((venue, idx) => (
-                  <li
-                     key={idx}
-                     className='venueItem'
-                     id={venue.id}
-                     role="button" tabIndex="0"
-                     onClick={_ => this.props.handleClick(venue)}
-                  >
-                     {venue.name}
-                  </li>
-               ))}
-            </ol>
+               {
+
+                  this.props.venues &&
+                  this.props.venues.map((venue, idx) => (
+                     <SideNavItem
+                        key={idx}
+                        className='venueItem'
+                        id={venue.id}
+                        role="button" tabIndex="0"
+                        onClick={_ => this.props.handleClick(venue)}
+                     >
+                        {venue.name}
+                     </SideNavItem>
+                  ))}
+            </SideNav>
+
+         </>
       )
+
    }
 }
 

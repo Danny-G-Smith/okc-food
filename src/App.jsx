@@ -20,9 +20,9 @@ class App extends Component {
          <main>
             {/*https://materializecss.com/ documentation*/}
             {/*https://react-materialize.github.io/#/*/}
-            <Navbar brand='logo'>
-               <NavItem onClick={() => console.log('test click')}>Getting started</NavItem>
-            </Navbar>
+            <div id='header'>
+               {/*<NavItem onClick={() => console.log('test click')}>Getting started</NavItem>*/}
+            </div>
 
             {/*<Toast toast="here you go!">*/}
             {/*Toast*/}

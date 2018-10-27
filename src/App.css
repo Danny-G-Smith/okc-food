@@ -7,13 +7,13 @@
 
 .App-logo {
    animation: App-logo-spin infinite 20s linear;
-   height: 80px;
+   height: 40px;
 }
 
 .App-header {
    background-color: #222;
    color: white;
-   height: 150px;
+   height: 140px;
    padding: 20px;
 }
 
@@ -25,12 +25,69 @@
    font-size: large;
 }
 
+#header {
+   width: calc(100vw - 320px);
+   position: fixed;
+   top: 0;
+   height: 44px;
+   background-color: #1EAAF1; /* #EC6F40;*/
+   z-index: -999;
+}
+
+#map {
+   top: 44px;
+   height: calc(100vh - 83px);
+   width: calc(100vw ) !important;
+}
+
 .sideBar {
    width: 320px;
 }
 
+ul#sidenav_0 {
+   top: 42px;
+   height: calc(100vh - 83px);
+   width: 320px;
+}
+
+input#search {
+   /*background-color: #fff !important;*/
+   /*z-index: 9999;*/
+}
+
+.side-nav li>a {
+   font-size: 16px;
+   font-weight: 500;
+   height: 30px;
+   line-height: 30px;
+}
+
+input::-webkit-input-placeholder {
+   color: rgba(0, 0, 0, 0.40) !important;
+}
+
+input:-moz-placeholder { /* Firefox 18- */
+   color: rgba(0, 0, 0, 0.40) !important;
+}
+
+input::-moz-placeholder { /* Firefox 19+ */
+   color: rgba(0, 0, 0, 0.40) !important;
+}
+
+input:-ms-input-placeholder {
+   color: rgba(0, 0, 0, 0.40) !important;
+}
+
+.btn {
+   position: fixed;
+   top: 0;
+   right: 0;
+   height: 42px;
+   padding: 0 1.2rem;
+}
+
 nav, .nav {
-   background-color: #1EAAF1; /* #EC6F75;*/
+   background-color: #1EAAF1; /* #EC6F40;*/
 }
 
 footer, .page-footer {
@@ -41,17 +98,13 @@ footer, .page-footer {
    min-height: 35px;
 }
 
-.venueList {
-   padding: 5px;
-}
-
 .venueItem {
    background: #eee;
    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
    font-size: 18px;
    list-style: none;
-   margin: 6px 0 0;
-   padding: 5px;
+   margin: 3px 0 0;
+   padding: 2px 0;
 }
 
 li {
@@ -66,11 +119,6 @@ li {
 .MyApi {
    display: flex;
    flex-flow: row nowrap;
-}
-
-#map {
-   height: calc(100vh - 140px);
-   width: calc(100vw - 320px) !important;
 }
 
 .sideBar {
@@ -111,11 +159,14 @@ nav .brand-logo {
 }
 
 input#search {
+   position: fixed;
    box-sizing: border-box;
    font-size: 18px;
    line-height: 1.4;
    padding: 5px 10px 0;
-   width: 100%;
+   width: 320px;
+   right: 0;
+   top: 0;
 }
 
 ol.venueList {
@@ -143,6 +194,7 @@ div.gm-style-iw {
    top: 9px;
    width: 130px;
 }
+
 div.gm-style-iw h3 {
    margin: 16px 0 0;
    font-size: 24px !important;
