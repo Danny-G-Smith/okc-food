@@ -30,8 +30,15 @@
    top: 0;
    height: 44px;
    background-color: #1EAAF1; /* #EC6F40;*/
-   z-index: -999;
+   /*z-index: -999;*/
 }
+
+/*#map div[style],*/
+/*.sideBar,*/
+/*.side-nav.fixed {*/
+   /*background: transparent !important;*/
+   /*background-color: transparent !important;*/
+/*}*/
 
 #map {
    top: 44px;
@@ -41,7 +48,7 @@
 
 footer,
 #map {
-   width: calc(100vw) !important;
+   width: calc(100vw ) !important;
 }
 
 /*This applies from 1240px onwards*/
@@ -51,14 +58,30 @@ footer,
    }
 }
 
-.sideBar {
+@media only screen and (max-width: 993px){
+   a.sidenav-trigger{
+      display: block !important;
+   }
+
+   .hide-on-med-and-down {
+      display: none !important;
+   }
+
+   nav .brand-logo {
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
+   }
+}
+
+.venueList {
    width: 320px;
 }
 
-ul#sidenav_0 {
+ul.venueList {
    top: 42px;
    height: calc(100vh - 83px);
-   width: 320px;
+   /*width: 320px;*/
 }
 
 input#search {

@@ -29,7 +29,7 @@ class AddButtonTrigger extends Component {
 
       return (
          <>
-            <SideNav className="venueList sidenav fixed"
+            <SideNav  id="slide-out" className="venueList sidenav sidenav-fixed fixed show-on-large"
                      options={{
                         triggerView: 'showOnLarge',
                         showOnLarge: true,
@@ -40,7 +40,8 @@ class AddButtonTrigger extends Component {
                         isFixed: true
                      }}
                      trigger={<Button>VENUE</Button>}
-            >
+                      fixed={true}
+         >
 
                {
 
@@ -54,6 +55,7 @@ class AddButtonTrigger extends Component {
                         onClick={_ => this.props.handleClick(venue)}
                      >
                         {venue.name}
+
                      </SideNavItem>
                   ))}
             </SideNav>
