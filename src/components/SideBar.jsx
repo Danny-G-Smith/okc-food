@@ -21,6 +21,7 @@ class SideBar extends Component {
       return (
          <div className="sideBar">
             <input type={'search'}
+               tabIndex={0}
                id={'search'}
                placeholder={'Filter Venues'}
                value={this.state.query}

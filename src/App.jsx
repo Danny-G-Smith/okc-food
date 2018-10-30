@@ -4,8 +4,6 @@ import './App.css'
 // https://www.npmjs.com/package/prop-types
 import MyApi from './components/MyApi'
 
-require('dotenv').config()
-
 class App extends Component {
 
    /*
@@ -18,7 +16,7 @@ class App extends Component {
             <main>
                {/*https://materializecss.com/ documentation*/}
                {/*https://react-materialize.github.io/#/*/}
-               <div id='header'>
+               <div id='header' tabIndex='0'>
                   <p>OKC Food</p>
                </div>
 

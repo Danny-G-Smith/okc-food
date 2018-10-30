@@ -289,3 +289,17 @@ div.gm-style-iw h3 {
    position: fixed;
    width: 100vw;
 }
+
+   #toast-container {
+      left: 18%;
+      right: 18%;
+      top: 7%;
+      max-width: 60%;
+   }
+
+   div.toast {
+      background-color: red;
+      font-size: 18px;
+      font-weight: bold;
+      color: #000;
+   }

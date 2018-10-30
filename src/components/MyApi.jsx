@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import SideBar from './SideBar'
 
-require('dotenv').config()
-
 class MyApi extends Component {
    constructor (props) {
       super(props)
@@ -35,14 +33,7 @@ class MyApi extends Component {
    }
 
    getVenues = () => {
-      // https://www.npmjs.com/package/dotenv
-      // jkkjjjllljlj
-      // # with npm
-      // npm install dotenv --S
-      // require('dotenv').config()
-      // There is a quirk here, if we weren't using create-react-app we wouldn't
-      // have to place REACT_APP_ in front of the variable.
-      //
+
       const parameters = {
          client_id: `${process.env.REACT_APP_client_id}`,
          client_secret: `${process.env.REACT_APP_client_secret}`,
@@ -54,16 +45,16 @@ class MyApi extends Component {
          radius: 10000, //`${process.env.REACT_APP_radius}`,
          v: `${process.env.REACT_APP_v}`
       }
-      const explore = 'https://api.foursquare.com/v2/venues/explore?'
-      const list = 'https://api.foursquare.com/v2/venues/'
-      const search = 'https://api.foursquare.com/v2/venues/search?'
-      const venues = 'https://api.foursquare.com/v2/venues/'
+      const explore  = 'https://api.foursquare.com/v2/venues/explore?'
+      const list     = 'https://api.foursquare.com/v2/venues/'
+      const search   = 'https://api.foursquare.com/v2/venues/search?'
+      const venues   = 'https://api.foursquare.com/v2/venues/'
 
       axios.get(
-         explore + new URLSearchParams(parameters),
-         list + new URLSearchParams(parameters),
-         search + new URLSearchParams(parameters),
-         venues + new URLSearchParams(parameters),
+         explore  + new URLSearchParams(parameters),
+         list     + new URLSearchParams(parameters),
+         search   + new URLSearchParams(parameters),
+         venues   + new URLSearchParams(parameters),
       )
          .then(response => {
             this.setState({
@@ -72,6 +63,7 @@ class MyApi extends Component {
 
          })
          .catch(error => {
+            alert('ERROR!! ' + error + '\nFailed to get FourSquare data.')
             console.log('ERROR!! ' + error)
          })
    }
@@ -109,6 +101,7 @@ class MyApi extends Component {
             else {
                venue.marker.setVisible(true)
             }
+            return venue.marker
          })
 
          return ( {list} )
@@ -124,7 +117,12 @@ class MyApi extends Component {
       })
 
       this.setMarkers()  // Set markers
-      // this.setButtons()  // Set buttons
+   }
+
+   gm_authFailure = () => {
+
+      alert('Google failed to retrieve the map')
+
    }
 
    // Set an infoWindow for each marker
@@ -152,7 +150,6 @@ class MyApi extends Component {
          })
 
          return ( {venues, list: venues} )
-
       })
    }
 
@@ -207,6 +204,8 @@ class MyApi extends Component {
             <div id="map"></div>
             <SideBar
                {...this.state}
+               role="application"
+               aria-label="map"
                venues={this.state.list}
                updateSearchString={this.updateSearchString}
                handleClick={this.handleClick}
@@ -228,4 +227,3 @@ const __loadScript = (url) => {
 }
 
 export default MyApi
-
