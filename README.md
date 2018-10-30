@@ -1,4 +1,4 @@
-#My Neighborhood Map Project
+# My Neighborhood Map Project
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [Getting Started / Credits](#getting-started-credits)
 - [Installing](#installing)
 
-##Getting Started / Credits
+## Getting Started / Credits
 
 This was a big difficult project, and I would like to thank Carlos F. and Rodrick, for 
 taking time to work with me and give me support.
@@ -24,7 +24,7 @@ toast for the errors, but didn't have the time to track down the issues so went 
 I don't feel like this is a finished project as I have a lot I would like to refactor and 
 improve, but there comes a time you have to ship.
 
-##Installing
+## Installing
 
 Download the source from my github account.
 Add the .env file to the root directory.
