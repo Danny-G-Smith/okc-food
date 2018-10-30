@@ -10,6 +10,22 @@
    height: 40px;
 }
 
+#header {
+   display: grid;
+}
+
+#header p {
+   align-self: center;
+   color: #fff;
+   font-size: 20px;
+   font-weight: bold;
+   margin: 0;
+   padding: 0;
+   text-align: center;
+   text-shadow: 1px 1px 3px #333;
+   justify-self: center;
+}
+
 .App-header {
    background-color: #222;
    color: white;
@@ -26,29 +42,21 @@
 }
 
 #header {
+   background-color: #1EAAF1; /* #EC6F40;*/
+   height: 44px;
    position: fixed;
    top: 0;
-   height: 44px;
-   background-color: #1EAAF1; /* #EC6F40;*/
-   /*z-index: -999;*/
 }
 
-/*#map div[style],*/
-/*.sideBar,*/
-/*.side-nav.fixed {*/
-   /*background: transparent !important;*/
-   /*background-color: transparent !important;*/
-/*}*/
-
 #map {
+   height: calc(100vh - 88px);
    top: 44px;
-   height: calc(100vh - 83px);
-   width: calc(100vw ) !important;
+   width: calc(100vw) !important;
 }
 
 footer,
 #map {
-   width: calc(100vw ) !important;
+   width: calc(100vw) !important;
 }
 
 /*This applies from 1240px onwards*/
@@ -58,8 +66,8 @@ footer,
    }
 }
 
-@media only screen and (max-width: 993px){
-   a.sidenav-trigger{
+@media only screen and (max-width: 993px) {
+   a.sidenav-trigger {
       display: block !important;
    }
 
@@ -69,19 +77,53 @@ footer,
 
    nav .brand-logo {
       left: 50%;
-      -webkit-transform: translateX(-50%);
       transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+   }
+
+   .venueList {
+      flex-direction: column !important;
+   }
+
+   .venueItem {
+      background: #eee;
+      box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+      list-style: none;
    }
 }
 
+button.venueItem {
+   background: #eee;
+   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+   font-size: 16px;
+   list-style: none;
+   padding: 6px;
+}
+
+#sideBarWrapper .btn {
+   height: 40px;
+}
 .venueList {
+   display: grid;
+   flex-direction: row;
    width: 320px;
 }
 
 ul.venueList {
+   height: calc(100vh - 88px);
    top: 42px;
-   height: calc(100vh - 83px);
-   /*width: 320px;*/
+   width: 320px;
+}
+
+button.venueItem {
+   flex-wrap: nowrap;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
 }
 
 input#search {
@@ -89,35 +131,46 @@ input#search {
    /*z-index: 9999;*/
 }
 
-.side-nav li>a {
-   font-size: 16px;
+.side-nav {
+   padding-bottom: 0;
+   overflow-y: scroll;
+}
+
+
+.side-nav li > a {
+   /*font-size: 16px;*/
+   /*font-weight: 500;*/
+   /*height: 30px;*/
+   /*line-height: 30px;*/
+}
+
+.side-bar-trigger {
+   text-shadow: 1px 1px 3px #333;
    font-weight: 500;
-   height: 30px;
-   line-height: 30px;
 }
 
 input::-webkit-input-placeholder {
-   color: rgba(0, 0, 0, 0.40) !important;
+   color: rgba(0, 0, 0, 0.55) !important;
 }
 
 input:-moz-placeholder { /* Firefox 18- */
-   color: rgba(0, 0, 0, 0.40) !important;
+   color: rgba(0, 0, 0, 0.55) !important;
 }
 
 input::-moz-placeholder { /* Firefox 19+ */
-   color: rgba(0, 0, 0, 0.40) !important;
+   color: rgba(0, 0, 0, 0.55) !important;
 }
 
 input:-ms-input-placeholder {
-   color: rgba(0, 0, 0, 0.40) !important;
+   color: rgba(0, 0, 0, 0.55) !important;
 }
 
 .btn {
+   height: 45px;
+   /*padding: 0 1.2rem;*/
    position: fixed;
-   top: 0;
    right: 0;
-   height: 42px;
-   padding: 0 1.2rem;
+   top: 0;
 }
 
 nav, .nav {
@@ -132,17 +185,9 @@ footer, .page-footer {
    min-height: 35px;
 }
 
-.venueItem {
-   background: #eee;
-   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-   font-size: 18px;
-   list-style: none;
-   margin: 3px 0 0;
-   padding: 2px 0;
-}
+
 
 li {
-   /*display: list-item;*/
    text-align: -webkit-match-parent;
 }
 
@@ -156,7 +201,6 @@ li {
 }
 
 .sideBar {
-   /*height: calc(100vh - 298px);*/
    overflow-y: scroll;
 }
 
@@ -171,18 +215,6 @@ nav .brand-logo {
    position: inherit;
 }
 
-/*.page-footer {*/
-/*justify-content: space-around;*/
-/*display: flex;*/
-/*}*/
-
-/*.page-footer .container,*/
-/*.page-footer .footer-copyright {*/
-/*justify-content: flex-start  !important;*/
-/*position: inherit;*/
-/*display: flex !important;*/
-/*}*/
-
 @keyframes App-logo-spin {
    from {
       transform: rotate(0deg);
@@ -193,14 +225,14 @@ nav .brand-logo {
 }
 
 input#search {
-   position: fixed;
    box-sizing: border-box;
    font-size: 18px;
    line-height: 1.4;
    padding: 5px 10px 0;
-   width: 320px;
+   position: fixed;
    right: 0;
    top: 0;
+   width: 320px;
 }
 
 ol.venueList {
@@ -221,8 +253,8 @@ input[type=search]:not(.browser-default) {
 div.gm-style-iw {
    font-size: 16px !important;
    font-weight: 300;
-   line-height: 1.4;
    left: 15px;
+   line-height: 1.4;
    overflow: hidden;
    position: absolute;
    top: 9px;
@@ -230,7 +262,30 @@ div.gm-style-iw {
 }
 
 div.gm-style-iw h3 {
-   margin: 16px 0 0;
    font-size: 24px !important;
    font-weight: bold !important;
+   margin: 16px 0 0;
+}
+
+.footer .copyright,
+.footer .edu {
+   align-self: center;
+   color: #fff;
+   font-size: 16px;
+   font-weight: 300;
+   margin: 0;
+   padding: 0;
+   text-shadow: 1px 1px 3px #333;
+}
+
+.footer {
+   background-color: #2FA69A;
+   bottom: 0;
+   box-sizing: inherit;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   height: 44px;
+   position: fixed;
+   width: 100vw;
 }
