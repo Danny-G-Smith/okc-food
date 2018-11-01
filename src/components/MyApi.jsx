@@ -49,7 +49,7 @@ class MyApi extends Component {
          center: '35.52248, -97.619255',
          google_map: `${process.env.REACT_APP_google_map}`,
          radius: 10000, //`${process.env.REACT_APP_radius}`,
-         v: `${process.env.REACT_APP_v}`
+         v: 20180908 //`${process.env.REACT_APP_v}`
       }
 
       const explore = 'https://api.foursquare.com/v2/venues/explore?'

@@ -4,9 +4,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Table of Contents
 
-- [Getting Started / Credits](#getting-started-credits)
-- [Installing](#installing)
-
+- [Getting Started / Credits](##getting-started-credits)
+- [Installing](##installing)
+- [Adding Development Environment Variables In `.env`](##adding-development-environment-variables-in-`.env`)
 ## Getting Started / Credits
 
 This was a big difficult project, and I would like to thank Carlos F. and Rodrick, for 
@@ -23,6 +23,23 @@ toast for the errors, but didn't have the time to track down the issues so went 
 
 I don't feel like this is a finished project as I have a lot I would like to refactor and 
 improve, but there comes a time you have to ship.
+
+### Adding Development Environment Variables In `.env`
+
+> Note: this was built with create-react-app, so dotenv is already installed..
+
+To define permanent environment variables, create a file called `.env` in the root of your project:
+
+```
+REACT_APP_client_id='your foursquare client key'
+REACT_APP_client_secret='your foursquare secret key'
+REACT_APP_google_map='your google map url with key'
+```
+> Note: This file is not tracked with git
+
+> Note: You must create custom environment variables beginning with `REACT_APP_`. Any other variables except `NODE_ENV` will be ignored to avoid [accidentally exposing a private key on the machine that could have the same name](https://github.com/facebook/create-react-app/issues/865#issuecomment-252199527). Changing any environment variables will require you to restart the development server if it is running.
+
+> Note: this feature is available with `react-scripts@1.1.0` and higher.
 
 ## Installing
 
