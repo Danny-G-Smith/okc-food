@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import SideBar from './SideBar'
+import ErrorBoundary from './ErrorBoundary'
 
 class MyApi extends Component {
    constructor (props) {
@@ -24,6 +25,11 @@ class MyApi extends Component {
    }
 
    componentDidMount () {
+      window.gm_authFailure = () => {
+         alert('ERROR!! \nFailed to get Google map.')
+         console.log('ERROR!! \nFailed to get Google map.')
+      }
+
       this.getVenues()
    }
 
@@ -45,16 +51,17 @@ class MyApi extends Component {
          radius: 10000, //`${process.env.REACT_APP_radius}`,
          v: `${process.env.REACT_APP_v}`
       }
-      const explore  = 'https://api.foursquare.com/v2/venues/explore?'
-      const list     = 'https://api.foursquare.com/v2/venues/'
-      const search   = 'https://api.foursquare.com/v2/venues/search?'
-      const venues   = 'https://api.foursquare.com/v2/venues/'
+
+      const explore = 'https://api.foursquare.com/v2/venues/explore?'
+      const list = 'https://api.foursquare.com/v2/venues/'
+      const search = 'https://api.foursquare.com/v2/venues/search?'
+      const venues = 'https://api.foursquare.com/v2/venues/'
 
       axios.get(
-         explore  + new URLSearchParams(parameters),
-         list     + new URLSearchParams(parameters),
-         search   + new URLSearchParams(parameters),
-         venues   + new URLSearchParams(parameters),
+         explore + new URLSearchParams(parameters),
+         list + new URLSearchParams(parameters),
+         search + new URLSearchParams(parameters),
+         venues + new URLSearchParams(parameters),
       )
          .then(response => {
             this.setState({
@@ -66,6 +73,7 @@ class MyApi extends Component {
             alert('ERROR!! ' + error + '\nFailed to get FourSquare data.')
             console.log('ERROR!! ' + error)
          })
+
    }
 
    handleClick = (venue) => {
@@ -113,16 +121,99 @@ class MyApi extends Component {
       //const { lat, lng } = this.state.center;
       this.map = new window.google.maps.Map(document.getElementById('map'), {
          center: {lat: 35.52248, lng: -97.619255},
-         zoom: 13
+         zoom: 13,
+         mapTypeControl: false,
+         styles: [
+            {
+               'featureType': 'administrative',
+               'stylers': [
+                  {
+                     'lightness': 33
+                  },
+                  {
+                     'visibility': 'on'
+                  }
+               ]
+            },
+            {
+               'featureType': 'landscape',
+               'stylers': [
+                  {
+                     'color': '#efefef'
+                  }
+               ]
+            },
+            {
+               'featureType': 'poi.park',
+               'elementType': 'geometry',
+               'stylers': [
+                  {
+                     'color': '#e3eed3'
+                  }
+               ]
+            },
+            {
+               'featureType': 'poi.park',
+               'elementType': 'labels',
+               'stylers': [
+                  {
+                     'lightness': 20
+                  },
+                  {
+                     'visibility': 'on'
+                  }
+               ]
+            },
+            {
+               'featureType': 'road',
+               'stylers': [
+                  {
+                     'lightness': 20
+                  }
+               ]
+            },
+            {
+               'featureType': 'road.arterial',
+               'elementType': 'geometry',
+               'stylers': [
+                  {
+                     'color': '#bdcdd3'
+                  }
+               ]
+            },
+            {
+               'featureType': 'road.highway',
+               'elementType': 'geometry',
+               'stylers': [
+                  {
+                     'color': '#83a5b0'
+                  }
+               ]
+            },
+            {
+               'featureType': 'road.local',
+               'elementType': 'geometry',
+               'stylers': [
+                  {
+                     'color': '#ffffff'
+                  }
+               ]
+            },
+            {
+               'featureType': 'water',
+               'stylers': [
+                  {
+                     'color': '#b5cbe4'
+                  },
+                  {
+                     'visibility': 'on'
+                  }
+               ]
+            }
+         ]
       })
 
       this.setMarkers()  // Set markers
-   }
-
-   gm_authFailure = () => {
-
-      alert('Google failed to retrieve the map')
-
    }
 
    // Set an infoWindow for each marker
@@ -197,6 +288,7 @@ class MyApi extends Component {
    }
 
    render () {
+
       return (
          <div className="MyApi">
 
